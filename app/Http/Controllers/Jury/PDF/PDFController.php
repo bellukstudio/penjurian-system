@@ -34,14 +34,6 @@ class PDFController extends Controller
         // diberi nama dan di download
         return $pdf->download('assessmentJury.pdf');
     }
-    public function exportPdfAssesmentByUser(Request $request)
-    {
-        dd($request->assessment);
-        // // memuat file html 
-        // $pdf = PDF::loadView('user.report.pdf.export_pdf_assessment', ['data' => $item])->setPaper('a4', 'potrait');
-        // diberi nama dan di download
-        // return $pdf->download('assessment_user.pdf');
-    }
 }
       // $score =  Score::join('contests', 'scores.id_contest', '=', 'contests.id')
         //     ->join('users', 'scores.id_jury', '=', 'users.id')->join('participants', 'scores.id_participant', '=', 'participants.id')

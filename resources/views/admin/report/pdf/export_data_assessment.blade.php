@@ -38,6 +38,7 @@
                 <th>#</th>
                 <th>Nama Acara</th>
                 <th>Nama Lomba</th>
+                <th>Email User</th>
                 <th>Aspek Penilaian</th>
                 <th>Nama Peserta</th>
                 <th>Total Nilai</th>
@@ -45,10 +46,11 @@
             </tr>
             @forelse ($data as $index => $item)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td >{{ $index + 1 }}</td>
                     <td>{{ $item->name_event }}</td>
-                    <td>{{ $item->name_contest }}</td>
-                    <td>{{ $item->aspek }}</td>
+                    <td >{{ $item->name_contest }}</td>
+                    <td >{{ $item->email_user }}</td>
+                    <td>{{ $item->aspek }}d</td>
                     <td>{{ $item->name_participants }}</td>
                     <td>{{ $item->total_score }}</td>
                     <td>{{ $item->average }}</td>

@@ -2,7 +2,7 @@
 @section('content')
     <div class="text-start">
         <div class="ml-5">
-            <h3 class="text-start">Laporan Penilaian</h3>
+            <h3 class="text-start">Laporan Lomba</h3>
             <div class="container-sm">
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -17,13 +17,10 @@
                     </div>
                 @endif
             </div>
-            <form class="form-inline" action="{{ route('manageReport.dataAssessment') }}" method="POST">
+            <form class="form-inline" action="{{ route('manageReport.dataContest') }}" method="POST">
                 @csrf
                 <div class="form-group mb-2">
                     <input type="text" name="searchEventName" id="" class="form-control ml-2" placeholder="Nama Acara">
-                </div>
-                <div class="form-group mb-2">
-                    <input type="text" name="searchContestName" id="" class="form-control ml-2" placeholder="Nama Lomba">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 ml-2" name="searchBtn"><i class="fa fa-search"></i>
                     Cari</button>
@@ -39,52 +36,45 @@
                     <table class="table table-bordered" width="100%">
                         <thead>
                             <th>#</th>
-                            <th>Nama Acara</th>
                             <th>Nama Lomba</th>
-                            <th>Nama Juri</th>
+                            <th>Jenis Lomba (Kelompok / Individu)</th>
+                            <th>Nama Acara</th>
                             <th>Aspek Penilaian</th>
-                            <th>Nama Peserta</th>
-                            <th>Total Nilai</th>
-                            <th>Rata Rata</th>
                         </thead>
                         <tbody>
-                            @forelse ($data as $index => $item)
+                            @forelse ($contest as $index => $item)
                                 <tr>
                                     <td class="border px-6 py-4">{{ $index + 1 }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_event }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_contest }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_jury }}</td>
-                                    <td class="border px-6 py-4">{{ $item->aspek }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_participants }}</td>
-                                    <td class="border px-6 py-4">{{ $item->total_score }}</td>
-                                    <td class="border px-6 py-4">{{ $item->average }}</td>
-
-
+                                    <td class="border px-6 py-4">{{ $item->contest_name }}</td>
+                                    <td class="border px-6 py-4">{{ $item->type_contest }}</td>
+                                    <td class="border px-6 py-4">{{ $item->event_name }}</td>
+                                    <td class="border px-6 py-4">{{ $item->contest_aspect }}</td>
                                 </tr>
                             @empty
-                                <td colspan="8" class="border px-6 py-4 text-center">Tidak ada data</td>
+                                <tr>
+                                    <td colspan="5" class="border px-6 py-4">Tidak ada data</td>
+                                </tr>
                             @endforelse
-
                         </tbody>
 
                     </table>
                 </div>
                 {{-- paginate --}}
                 <div class="card-footer text-muted">
-                    @if ($data->hasMorePages())
+                    @if ($contest->hasMorePages())
                         <table>
                             <tr>
-                                <td><a href="{{ $data->previousPageUrl() }}" class="text-decoration-none">
+                                <td><a href="{{ $contest->previousPageUrl() }}" class="text-decoration-none">
                                         << Back</a>
                                 </td>
                                 <td>
-                                    <h8>&nbsp;{{ $data->currentPage() }} &nbsp;</h8>
+                                    <h8>&nbsp;{{ $contest->currentPage() }} &nbsp;</h8>
                                 </td>
-                                <td><a href="{{ $data->nextPageUrl() }}" class="text-decoration-none">Next >> </a></td>
+                                <td><a href="{{ $contest->nextPageUrl() }}" class="text-decoration-none">Next >> </a></td>
                             </tr>
                         </table>
                     @endif
-                    @if ($data->currentPage() == $data->lastPage())
+                    @if ($contest->currentPage() == $contest->lastPage())
                         <a href="{{ $data->previousPageUrl() }}" class="text-decoration-none">
                             << Back</a>
                     @endif

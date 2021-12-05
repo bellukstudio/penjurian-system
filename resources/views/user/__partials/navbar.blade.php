@@ -40,9 +40,10 @@
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="">Data Lomba </a>
-                        <li><a class="dropdown-item" href="">Data Acara </a>
-                        <li><a class="dropdown-item" href="">Data Peserta </a>
+                        <li><a class="dropdown-item" href="{{ route('manageReport.dataContest') }}">Data Lomba </a>
+                        <li><a class="dropdown-item" href="{{ route('manageReport.dataEvent') }}">Data Acara </a>
+                        <li><a class="dropdown-item" href="{{ route('manageReport.dataParticipant') }}">Data Peserta
+                            </a>
                         <li><a class="dropdown-item" href="{{ route('manageReport.dataAssessment') }}">Data Penilaian
                             </a>
                         </li>

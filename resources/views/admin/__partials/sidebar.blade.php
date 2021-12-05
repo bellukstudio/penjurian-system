@@ -84,7 +84,11 @@
         </a>
         <div id="collapseFive" class="collapse" aria-labelledby="collapseFive" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Data Lomba</a>
+                <a class="collapse-item" href="{{ route('manageReportAdmin.dataUser') }}">Data User</a>
+                <a class="collapse-item" href="{{ route('manageReportAdmin.dataEvent') }}">Data Acara</a>
+                <a class="collapse-item" href="{{ route('manageReportAdmin.dataContest') }}">Data Lomba</a>
+                <a class="collapse-item" href="{{ route('manageReportAdmin.dataAssessment') }}">Data Penilaian</a>
+                <a class="collapse-item" href="{{ route('manageReportAdmin.dataParticipant') }}">Data Peserta</a>
             </div>
         </div>
     </li>

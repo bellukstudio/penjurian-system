@@ -2,7 +2,7 @@
 @section('content')
     <div class="text-start">
         <div class="ml-5">
-            <h3 class="text-start">Laporan Penilaian</h3>
+            <h3 class="text-start">Laporan Peserta</h3>
             <div class="container-sm">
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -17,7 +17,7 @@
                     </div>
                 @endif
             </div>
-            <form class="form-inline" action="{{ route('manageReport.dataAssessment') }}" method="POST">
+            <form class="form-inline" action="{{ route('manageReport.dataParticipant') }}" method="POST">
                 @csrf
                 <div class="form-group mb-2">
                     <input type="text" name="searchEventName" id="" class="form-control ml-2" placeholder="Nama Acara">
@@ -39,30 +39,32 @@
                     <table class="table table-bordered" width="100%">
                         <thead>
                             <th>#</th>
+                            <th>Nama Peserta</th>
+                            <th>Jenis Kelamin</th>
+                            <th>No Telepon</th>
+                            <th>Alamat</th>
                             <th>Nama Acara</th>
                             <th>Nama Lomba</th>
-                            <th>Nama Juri</th>
-                            <th>Aspek Penilaian</th>
-                            <th>Nama Peserta</th>
-                            <th>Total Nilai</th>
-                            <th>Rata Rata</th>
                         </thead>
                         <tbody>
                             @forelse ($data as $index => $item)
                                 <tr>
                                     <td class="border px-6 py-4">{{ $index + 1 }}</td>
+                                    <td class="border px-6 py-4">{{ $item->name_participant }}</td>
+                                    <td class="border px-6 py-4">
+                                        @if ($item->gender_participant == 'L')
+                                            Laki - Laki
+                                        @else
+                                            Perempuan
+                                        @endif
+                                    </td>
+                                    <td class="border px-6 py-4">{{ $item->phone_participant }}</td>
+                                    <td class="border px-6 py-4">{{ $item->address_participant }}</td>
                                     <td class="border px-6 py-4">{{ $item->name_event }}</td>
                                     <td class="border px-6 py-4">{{ $item->name_contest }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_jury }}</td>
-                                    <td class="border px-6 py-4">{{ $item->aspek }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_participants }}</td>
-                                    <td class="border px-6 py-4">{{ $item->total_score }}</td>
-                                    <td class="border px-6 py-4">{{ $item->average }}</td>
-
-
                                 </tr>
                             @empty
-                                <td colspan="8" class="border px-6 py-4 text-center">Tidak ada data</td>
+                                <td colspan="7" class="border px-6 py-4 text-center">Tidak ada data</td>
                             @endforelse
 
                         </tbody>

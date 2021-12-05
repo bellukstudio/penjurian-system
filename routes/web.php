@@ -11,13 +11,14 @@ use App\Http\Controllers\DashboardAdmin;
 use App\Http\Controllers\DashboardJuri;
 use App\Http\Controllers\DashboardUser;
 use App\Http\Controllers\Jury\JuriController;
-use App\Http\Controllers\ManageEventByUser;
-use App\Http\Controllers\ManageJuriByUser;
-use App\Http\Controllers\ManageParticipants;
-use App\Http\Controllers\ManageContest;
 use App\Http\Controllers\PDF\PDFController;
-use App\Http\Controllers\Report\ReportController;
+use App\Http\Controllers\User\Report\ReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\ManageContest;
+use App\Http\Controllers\User\ManageEventByUser;
+use App\Http\Controllers\User\ManageParticipants;
+use App\Http\Controllers\User\ManageJuriByUser;
+use App\Http\Controllers\Admin\Report\ReportAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,18 @@ Route::middleware('checkRoles:ADMIN')->group(function () {
     Route::get('/admin/manageContests/{id_contest}/manageParticipants/create', [ParticipantController::class, 'createParticipants'])->name('manageParticipants.createParticipants');
     // manage contest
     Route::resource('/admin/manageContests', ContestController::class);
+
+    // report
+    Route::get('/admin/report/dataUser', [ReportAdminController::class, 'dataUser'])->name('manageReportAdmin.dataUser');
+    Route::post('/admin/report/dataUser', [ReportAdminController::class, 'dataUser'])->name('manageReportAdmin.dataUser');
+    Route::get('/admin/report/dataEvent', [ReportAdminController::class, 'dataEvent'])->name('manageReportAdmin.dataEvent');
+    Route::post('/admin/report/dataEvent', [ReportAdminController::class, 'dataEvent'])->name('manageReportAdmin.dataEvent');
+    Route::get('/admin/report/dataContest', [ReportAdminController::class, 'dataContest'])->name('manageReportAdmin.dataContest');
+    Route::post('/admin/report/dataContest', [ReportAdminController::class, 'dataContest'])->name('manageReportAdmin.dataContest');
+    Route::get('/admin/report/dataParticipant', [ReportAdminController::class, 'dataParticipant'])->name('manageReportAdmin.dataParticipant');
+    Route::post('/admin/report/dataParticipant', [ReportAdminController::class, 'dataParticipant'])->name('manageReportAdmin.dataParticipant');
+    Route::get('/admin/report/dataAssessment', [ReportAdminController::class, 'dataAssessment'])->name('manageReportAdmin.dataAssessment');
+    Route::post('/admin/report/dataAssessment', [ReportAdminController::class, 'dataAssessment'])->name('manageReportAdmin.dataAssessment');
 });
 // end admin route
 
@@ -105,8 +118,13 @@ Route::middleware('checkRoles:USER')->group(function () {
 
     // report
     Route::get('/user/manageReport/dataAssessment', [ReportController::class, 'dataAssessment'])->name('manageReport.dataAssessment');
-    // pdf
-    Route::post('/user/manageReport/dataAssessment/export', [PDFController::class, 'exportPdfAssesmentByUser'])->name('exportPdf.exportPdfAssesmentByUser');
+    Route::post('/user/manageReport/dataAssessment', [ReportController::class, 'dataAssessment'])->name('exportPdf.dataAssessment');
+    Route::get('/user/manageReport/dataContest', [ReportController::class, 'dataContest'])->name('manageReport.dataContest');
+    Route::post('/user/manageReport/dataContest', [ReportController::class, 'dataContest'])->name('manageReport.dataContest');
+    Route::get('/user/manageReport/dataEvent', [ReportController::class, 'dataEvent'])->name('manageReport.dataEvent');
+    Route::post('/user/manageReport/dataEvent', [ReportController::class, 'dataEvent'])->name('manageReport.dataEvent');
+    Route::get('/user/manageReport/dataParticipant', [ReportController::class, 'dataParticipant'])->name('manageReport.dataParticipant');
+    Route::post('/user/manageReport/dataParticipant', [ReportController::class, 'dataParticipant'])->name('manageReport.dataParticipant');
 });
 // // end user route
 

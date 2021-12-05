@@ -1,4 +1,4 @@
-@extends('user.dashboard')
+@extends('admin.dashboard')
 @section('content')
     <div class="text-start">
         <div class="ml-5">
@@ -17,13 +17,16 @@
                     </div>
                 @endif
             </div>
-            <form class="form-inline" action="{{ route('manageReport.dataAssessment') }}" method="POST">
+            <form class="form-inline" action="{{ route('manageReportAdmin.dataAssessment') }}" method="POST">
                 @csrf
                 <div class="form-group mb-2">
                     <input type="text" name="searchEventName" id="" class="form-control ml-2" placeholder="Nama Acara">
                 </div>
                 <div class="form-group mb-2">
                     <input type="text" name="searchContestName" id="" class="form-control ml-2" placeholder="Nama Lomba">
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" name="searchEmailUser" id="" class="form-control ml-2" placeholder="Alamat Email">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 ml-2" name="searchBtn"><i class="fa fa-search"></i>
                     Cari</button>
@@ -41,7 +44,7 @@
                             <th>#</th>
                             <th>Nama Acara</th>
                             <th>Nama Lomba</th>
-                            <th>Nama Juri</th>
+                            <th>Email User</th>
                             <th>Aspek Penilaian</th>
                             <th>Nama Peserta</th>
                             <th>Total Nilai</th>
@@ -53,7 +56,7 @@
                                     <td class="border px-6 py-4">{{ $index + 1 }}</td>
                                     <td class="border px-6 py-4">{{ $item->name_event }}</td>
                                     <td class="border px-6 py-4">{{ $item->name_contest }}</td>
-                                    <td class="border px-6 py-4">{{ $item->name_jury }}</td>
+                                    <td class="border px-6 py-4">{{ $item->email_user }}</td>
                                     <td class="border px-6 py-4">{{ $item->aspek }}</td>
                                     <td class="border px-6 py-4">{{ $item->name_participants }}</td>
                                     <td class="border px-6 py-4">{{ $item->total_score }}</td>
@@ -84,10 +87,12 @@
                             </tr>
                         </table>
                     @endif
+
                     @if ($data->currentPage() == $data->lastPage())
                         <a href="{{ $data->previousPageUrl() }}" class="text-decoration-none">
                             << Back</a>
                     @endif
+
                 </div>
                 <br><br><br>
             </div>
