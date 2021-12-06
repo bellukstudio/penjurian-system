@@ -32,19 +32,9 @@
         <ul>
             <li>
                 DOM PDF <br>
-
 ```bash
 https://github.com/barryvdh/laravel-dompdf
 ```
-
-            </li>
-            <li>
-            Breadcrumbs <br>
-
-```bash
-https://github.com/diglactic/laravel-breadcrumbs
-```
-
             </li>
         </ul>
     </li>
