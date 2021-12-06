@@ -1,5 +1,5 @@
 ## APLIKASI PENJURIAN
-```dart
+```bash
 resource:
   git:
     url: https://github.com/Bellukchips/resource.git
