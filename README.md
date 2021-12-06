@@ -1,4 +1,15 @@
 ## APLIKASI PENJURIAN
+
+## Install Laravel
+<ul>
+    <li>
+        ## Install Composer
+        ```bash
+            https://getcomposer.org/download/
+        ```
+    </li>
+</ul>
+
 ## Create Database
 ```bash
 penjurian
