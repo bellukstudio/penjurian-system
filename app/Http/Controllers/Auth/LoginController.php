@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
+    public function landing(){
+        return view('index');
+    }
     public function index()
     {
         // menampilkan form login
@@ -23,7 +25,7 @@ class LoginController extends Controller
          * ke halaman sesuai role
          */
         if(Auth::user() == null){
-            return redirect()->route('login');
+            return redirect()->route('landing');
         }else if(Auth::user()->roles == "ADMIN"){
             return redirect()->route('dashboardAdmin');
         }else if(Auth::user()->roles == "USER"){
