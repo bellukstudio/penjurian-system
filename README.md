@@ -27,29 +27,20 @@
             </li>
         </ul>
     </li>
-      <li>
-        Library
-        <ul>
-            <li>
-                DOM PDF <br>
+</ul>
+
+## Library
+<h3>DOM DF</h3>
 
 ```bash
 https://github.com/barryvdh/laravel-dompdf
 ```
 
-            </li>
-            <li>
-            Breadcrumbs <br>
+<h3>Breadcrumbs</h3>
 
 ```bash
 https://github.com/diglactic/laravel-breadcrumbs
 ```
-
-            </li>
-        </ul>
-    </li>
-
-</ul>
 
 ## Create Database
 
