@@ -4,9 +4,11 @@
 <ul>
     <li>
         ## Install Composer
-        ```bash
+        <ul>
+            <li>
             https://getcomposer.org/download/
-        ```
+            </li>
+        </ul>
     </li>
 </ul>
 
