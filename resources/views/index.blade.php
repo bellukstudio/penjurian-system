@@ -17,7 +17,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg py-3 sticky-top navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('landing') }}">
                 <h3>PENJURIAN</h3>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -36,7 +36,11 @@
                         <a class="nav-link" href="#contact">HUBUNGI KAMI</a>
                     </li>
                 </ul>
-                <a class="btn btn-primary ms-lg-3" href="{{ route('login') }}">DAFTAR / MASUK</a>
+                @if (Auth::user() == null)
+                    <a class="btn btn-primary ms-lg-3" href="{{ route('login') }}">DAFTAR / MASUK</a>
+                @else
+                    <a class="btn btn-primary ms-lg-3" href="{{ route('login') }}">DASHBOARD</a>
+                @endif
             </div>
         </div>
     </nav>
@@ -51,7 +55,7 @@
                     <p class="text-white my-3">
                         Mengelola penjurian setiap acara dengan mudah
                     </p>
-                    <a href="{{ route('login') }}" class="btn me-2 btn-primary">Get Started</a>
+                    <a href="{{ route('login') }}" class="btn me-2 btn-primary">MULAI</a>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -12,10 +13,21 @@ class RegisterController extends Controller
     //
     public function index()
     {
+
         /**
-         * di arahkan ke form register
+         * fungsi untuk meredirect ketika tab di close
+         * dan sudah login maka akan langsung mengarah
+         * ke halaman sesuai role
          */
-        return view('auth.register');
+        if (Auth::user() == null) {
+            return view('auth.register');
+        } else if (Auth::user()->roles == "ADMIN") {
+            return redirect()->route('dashboardAdmin');
+        } else if (Auth::user()->roles == "USER") {
+            return redirect()->route('dashboardUser');
+        } else if (Auth::user()->roles == "JURI") {
+            return redirect()->route('dashboardJuri');
+        }
     }
 
     public function register(Request $request)

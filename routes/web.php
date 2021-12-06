@@ -31,12 +31,11 @@ use App\Http\Controllers\Admin\Report\ReportAdminController;
 |
 */
 
-Route::get('/', [LoginController::class, 'authRedirect']);
 
 // Auth
-Route::get('/landing', [LoginController::class, 'landing'])->name('landing');
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::get('/', [LoginController::class, 'index'])->name('landing');
 
+Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');

@@ -8,33 +8,31 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function landing(){
-        return view('index');
-    }
+
     public function index()
     {
-        // menampilkan form login
-        return view('auth.login');
+        /**
+         * halaman landing page
+         */
+        return view('index');
     }
-
-    public function authRedirect()
+    public function login()
     {
         /**
          * fungsi untuk meredirect ketika tab di close
          * dan sudah login maka akan langsung mengarah
          * ke halaman sesuai role
          */
-        if(Auth::user() == null){
-            return redirect()->route('landing');
-        }else if(Auth::user()->roles == "ADMIN"){
+        if (Auth::user() == null) {
+            return view('auth.login');
+        } else if (Auth::user()->roles == "ADMIN") {
             return redirect()->route('dashboardAdmin');
-        }else if(Auth::user()->roles == "USER"){
+        } else if (Auth::user()->roles == "USER") {
             return redirect()->route('dashboardUser');
-        }else if(Auth::user()->roles == "JURI"){
+        } else if (Auth::user()->roles == "JURI") {
             return redirect()->route('dashboardJuri');
         }
     }
-
     public function authenticate(Request $request)
     {
         // validasi form login
@@ -55,10 +53,10 @@ class LoginController extends Controller
             } else if (Auth::user()->roles == 'ADMIN') {
                 $request->session()->regenerate();
                 return redirect()->intended('/admin');
-            } else if(Auth::user()->roles == 'JURI'){
+            } else if (Auth::user()->roles == 'JURI') {
                 $request->session()->regenerate();
                 return redirect()->intended('/juri');
-            }else{
+            } else {
                 return abort(404);
             }
         }
