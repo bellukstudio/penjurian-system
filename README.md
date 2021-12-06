@@ -30,7 +30,7 @@
 </ul>
 
 ## Library
-<h3>DOM DF</h3>
+<h3>DOM PDF</h3>
 
 ```bash
 https://github.com/barryvdh/laravel-dompdf
