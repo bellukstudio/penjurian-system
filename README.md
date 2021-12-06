@@ -40,3 +40,13 @@ php artisan migrate
 ```bash
 php artisan db:seed
 ```
+## Running
+```bash
+php artisan serve
+```
+## Another way to run the app
+launch url
+```bash
+    penjurian.test
+```
+For tutorial watch video : https://www.youtube.com/watch?v=pZqk57Xvujs&list=PLFIM0718LjIWiihbBIq-SWPU6b6x21Q_2&index=2&t=1091s
