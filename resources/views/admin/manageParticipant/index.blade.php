@@ -6,9 +6,9 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">
                 @if (Route::is('manageParticipants.indexParticipants'))
-                    Data Peserta Lomba {{ $contest->name }}
+                    {{ Breadcrumbs::render('dataContest.show', $contest) }}
                 @else
-                    Data Peserta
+                    {{ Breadcrumbs::render('dataParticipants') }}
                 @endif
             </h1>
             @if (Route::is('manageParticipants.indexParticipants'))
@@ -70,7 +70,7 @@
                                     </a>
                                     <br>
                                     <br>
-                                    <form action="{{ route('manageParticipants.destroy',$item->id) }}" method="POST">
+                                    <form action="{{ route('manageParticipants.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" class="btn btn-danger">

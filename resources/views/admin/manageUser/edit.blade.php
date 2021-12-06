@@ -20,7 +20,7 @@
             </div>
         @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Ubah Data User</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataUser.edit',$item); }}</h1>
         </div>
         <form action="{{ route('manageUser.update',$item->id) }}" method="POST" class="mb-5">
             @csrf

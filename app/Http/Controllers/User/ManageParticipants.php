@@ -42,7 +42,7 @@ class ManageParticipants extends Controller
          * akan di alikan ke halaman 404 not found
          */
         $contest = Contest::findOrFail($id);
-        $event = Event::where('id', $contest->id_event)->firstOrFail();
+        $event = Event::where('id', $idEvent)->firstOrFail();
         if ($event->id_user != Auth::user()->id) {
             return abort(404);
         }
@@ -53,7 +53,7 @@ class ManageParticipants extends Controller
         $serial_number = $generate_id + 1; // menambah angka 1 setiap jumlah yang di dapat kan dari data peserta
         return view('user.manageParticipant.create', [
             'contest' => $contest,
-            'idEvent' => $idEvent,
+            'event' => $event,
             'serial_number' => $serial_number
         ]);
     }
@@ -175,6 +175,8 @@ class ManageParticipants extends Controller
         $participant = Participant::findOrFail($id);
         return view('user.manageParticipant.edit', [
             'participant' => $participant,
+            'contest' => $contestCheck,
+            'event' => $event
         ]);
     }
 

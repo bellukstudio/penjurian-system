@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Data Lomba</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataContest') }}</h1>
             <a href="{{ route('manageContests.create') }}" class="btn btn-primary">Tambah Data</a>
         </div>
         @if (session()->has('success'))

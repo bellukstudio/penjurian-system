@@ -15,7 +15,10 @@
             </div>
         @endif
         <div class="card-body mb-5">
-            <h3 class="text-center h3">Peserta {{ $contest->name }}</h3><br>
+            <h5 class="container-sm text-center mb-5">
+                {{ Breadcrumbs::render('dataEventsUser.showContest.participant', $contest, $event) }}
+            </h5>
+            <br>
             <a href="{{ route('manageParticipant.saveParticipant', [$contest->id, $event->id]) }}"
                 class="btn btn-primary mb-5">Tambah Peserta Baru </a>
             <div class="table-responsive">

@@ -1,7 +1,9 @@
 @extends('user.dashboard')
 @section('content')
     <div class="container text-start">
-        <h3 class="text-center h3">{{ $contest->name }}</h3><br>
+        <h5 class="container-sm text-center mb-5">
+            {{ Breadcrumbs::render('dataEventsUser.showContest.showJury.create', $contest, $event) }}</h5>
+        <br>
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Pilih Juri</h1>
@@ -97,9 +99,9 @@
 @endsection
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>
-    $(function(){
-        $('.btnPilih').each(function(){
-            $(this).click(function(){
+    $(function() {
+        $('.btnPilih').each(function() {
+            $(this).click(function() {
                 var id = $(this).data('id');
                 var name = $(this).data('name');
                 document.getElementById('id_juri').value = id;

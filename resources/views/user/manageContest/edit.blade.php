@@ -19,7 +19,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h3 class="text-center h3">Edit Lomba {{ $contest->name }}</h3><br>
+        <h5 class="container-sm text-center mb-5">
+            {{ Breadcrumbs::render('dataEventsUser.showContest.edit', $contest, $event) }}</h5>
 
         <form action="{{ route('manageContest.update', $contest->id) }}" method="POST" class="mb-5">
             @csrf
@@ -39,7 +40,8 @@
             <div class="mb-3">
                 <label for="exampleInputType" class="form-label">Pilih Tipe Lomba</label>
                 <select name="type" id="" class="form-select">
-                    <option value="{{ $contest->type }}">Pilih Tipe Lomba (Jika ingin ganti tipe lomba, Jika tidak kosongkan
+                    <option value="{{ $contest->type }}">Pilih Tipe Lomba (Jika ingin ganti tipe lomba, Jika tidak
+                        kosongkan
                         saja)</option>
                     <option value="KELOMPOK">KELOMPOK</option>
                     <option value="INDIVIDU">INDIVIDU</option>

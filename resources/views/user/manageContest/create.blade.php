@@ -19,18 +19,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h3 class="text-center h3">Tambah Lomba Di Acara {{ $event->name }}</h3><br>
-
+        <h5 class="container-sm text-center mb-5">{{ Breadcrumbs::render('dataEventsUser.createContest', $event) }}</h5>
         <form action="{{ route('manageContest.store') }}" method="POST" class="mb-5">
             @csrf
             <input type="hidden" class="form-control" name="id_user" value="{{ Auth::user()->id }}">
             <div class="mb-3">
                 <label for="exampleInputname" class="form-label">Nama Lomba</label>
-                <input type="text" class="form-control" id="exampleInputname" name="name" value="{{ old('name') }}" placeholder="Pidato">
+                <input type="text" class="form-control" id="exampleInputname" name="name" value="{{ old('name') }}"
+                    placeholder="Pidato">
             </div>
             <div class="mb-3">
-                <label for="exampleInputAspect" class="form-label">Aspek Penilaian <strong>Pisahkan dengan tanda (,)</strong> contoh: Intonasi,Artikulasi</label>
-                <input type="text" class="form-control" id="exampleInputAspect" name="assessment_aspect" value="{{ old('assessment_aspect') }}" placeholder="Contoh: Intonasi,Artikulasi">
+                <label for="exampleInputAspect" class="form-label">Aspek Penilaian <strong>Pisahkan dengan tanda
+                        (,)</strong> contoh: Intonasi,Artikulasi</label>
+                <input type="text" class="form-control" id="exampleInputAspect" name="assessment_aspect"
+                    value="{{ old('assessment_aspect') }}" placeholder="Contoh: Intonasi,Artikulasi">
             </div>
 
             <div class="mb-3">

@@ -19,9 +19,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h2 class="text-center">
-            Edit Juri {{ $item->name }}
-        </h2>
+        <h5 class="container-sm text-center mb-5">{{ Breadcrumbs::render('dataJuriUser.edit', $item) }}</h5>
+
         <form action="{{ route('manageJuri.update', $item->id) }}" method="POST" class="mb-5">
             @csrf
             @method('put')
@@ -37,10 +36,12 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+                    placeholder="Password">
             </div>
 
             <button type="submit" class="btn btn-primary">Ubah</button>
         </form>
+        <br><br>
     </div>
 @endsection

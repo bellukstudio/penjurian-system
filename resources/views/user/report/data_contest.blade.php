@@ -75,7 +75,7 @@
                         </table>
                     @endif
                     @if ($contest->currentPage() == $contest->lastPage())
-                        <a href="{{ $data->previousPageUrl() }}" class="text-decoration-none">
+                        <a href="{{ $contest->previousPageUrl() }}" class="text-decoration-none">
                             << Back</a>
                     @endif
                 </div>

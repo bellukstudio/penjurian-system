@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\User;
@@ -147,7 +148,8 @@ class ManageJuriByUser extends Controller
         }
         return view('user.manageContest.juri.index', [
             'jury' => $data,
-            'contest' => $contest
+            'contest' => $contest,
+            'event' => $event
         ]);
     }
 
@@ -177,7 +179,8 @@ class ManageJuriByUser extends Controller
         $jury = $search->paginate(10);
         return view('user.manageContest.juri.create', [
             'contest' => $contest,
-            'juri' => $jury
+            'juri' => $jury,
+            'event' => $event
         ]);
     }
 
@@ -237,7 +240,8 @@ class ManageJuriByUser extends Controller
             'data' => $data,
             'juri' => $jury,
             'contest' => $contest,
-            'user' => $user
+            'user' => $user,
+            'event' => $event
         ]);
     }
     /**

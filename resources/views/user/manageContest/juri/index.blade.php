@@ -15,7 +15,8 @@
             </div>
         @endif
         <div class="card-body mb-5">
-            <h3 class="text-center h3">Lomba {{ $contest->name }}</h3><br>
+            <h5 class="container-sm text-center mb-5">{{ Breadcrumbs::render('dataEventsUser.showContest.showJury', $contest,$event) }}</h5>
+            <br>
             <a href="{{ route('manageJuri.saveJury', $contest->id) }}" class="btn btn-primary mb-5">Tambah Juri Baru</a>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%">

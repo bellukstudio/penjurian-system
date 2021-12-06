@@ -94,7 +94,7 @@ Route::middleware('checkRoles:USER')->group(function () {
     //manage juri
     Route::resource('/user/manageJuri', ManageJuriByUser::class);
     // form simpan juri di data lomba
-    Route::get('/user/manageJuri/jury/contest/{id}/new', [ManageJuriByUser::class, 'saveJury'])->name('manageJuri.saveJury');
+    Route::get('/user/manageJuri/jury/contest/{id}/create', [ManageJuriByUser::class, 'saveJury'])->name('manageJuri.saveJury');
     // form edit juri di data lomba
     Route::get('/user/manageJuri/jury/contest/{id}/edit', [ManageJuriByUser::class, 'editJury'])->name('manageJuri.editJury');
     // simpan juri untuk lomba
@@ -106,7 +106,7 @@ Route::middleware('checkRoles:USER')->group(function () {
     // mnage participant
     Route::resource('/user/manageParticipant', ManageParticipants::class);
     //form simpan peserta lomba
-    Route::get('/user/manageParticipant/{id}/new/{id_event}', [ManageParticipants::class, 'saveParticipant'])->name('manageParticipant.saveParticipant');
+    Route::get('/user/manageParticipant/{id}/create/{id_event}', [ManageParticipants::class, 'saveParticipant'])->name('manageParticipant.saveParticipant');
     // form edit peserta lomba
     Route::get('/user/manageParticipant/{id}/edit/{id_event}', [ManageParticipants::class, 'editParticipant'])->name('manageParticipant.editParticipant');
     // menampilkan data peserta lomba

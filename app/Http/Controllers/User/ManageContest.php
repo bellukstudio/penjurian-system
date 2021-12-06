@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use App\Http\Controllers\Controller;
 use App\Models\Contest;
 use App\Models\Event;
@@ -149,6 +150,7 @@ class ManageContest extends Controller
         }
         return view('user.manageContest.edit', [
             'contest' => $contest,
+            'event' => $event
         ]);
     }
 

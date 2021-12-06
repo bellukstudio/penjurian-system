@@ -58,7 +58,7 @@
                         </table>
                     @endif
                     @if ($event->currentPage() == $event->lastPage())
-                        <a href="{{ $data->previousPageUrl() }}" class="text-decoration-none">
+                        <a href="{{ $event->previousPageUrl() }}" class="text-decoration-none">
                             << Back</a>
                     @endif
                 </div>

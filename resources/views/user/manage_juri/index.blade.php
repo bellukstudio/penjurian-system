@@ -14,7 +14,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h2 class="text-center">Data Juri</h2>
+        <h5 class="container-sm text-center">{{ Breadcrumbs::render('dataJuriUser') }}</h5>
         <div class="card-body mb-5">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%">

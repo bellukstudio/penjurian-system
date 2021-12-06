@@ -57,7 +57,7 @@
         </div>
         {{-- form tambah juri --}}
         <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-            <h1 class="h3 mb-0 text-gray-800">Tambah Juri</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataJuri.create'); }}</h1>
         </div>
         @if (session()->has('juryFailed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">

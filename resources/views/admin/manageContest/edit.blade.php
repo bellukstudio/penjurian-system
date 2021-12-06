@@ -5,7 +5,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Pilih Acara</h1>
         </div>
-        <form class="form-inline" action="{{ route('manageContests.edit',$contest->id) }}" method="GET">
+        <form class="form-inline" action="{{ route('manageContests.edit', $contest->id) }}" method="GET">
             <div class="form-group mb-2">
                 <input type="text" name="search" class="form-control ml-2" placeholder="Nama Acara">
             </div>
@@ -66,7 +66,7 @@
 
         {{-- Form input --}}
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Edit Lomba</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataContest.edit',$contest) }}</h1>
         </div>
         @if (session()->has('contestFailed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -87,7 +87,7 @@
             </div>
         @endif
 
-        <form action="{{ route('manageContests.update',$contest->id) }}" method="POST" class="mb-5">
+        <form action="{{ route('manageContests.update', $contest->id) }}" method="POST" class="mb-5">
             @csrf
             @method('put')
             <div class="mb-3">
@@ -97,7 +97,8 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputname" class="form-label">Nama Event</label>
-                <input type="text" class="form-control" id="nameEvent" name="nameEvent" placeholder="Nama Event" value="{{ old('namaEvent') ?? $getEvent->name }}" readonly>
+                <input type="text" class="form-control" id="nameEvent" name="nameEvent" placeholder="Nama Event"
+                    value="{{ old('namaEvent') ?? $getEvent->name }}" readonly>
             </div>
             <input type="hidden" class="form-control" name="id_user" value="{{ Auth::user()->id }}">
             <div class="mb-3">

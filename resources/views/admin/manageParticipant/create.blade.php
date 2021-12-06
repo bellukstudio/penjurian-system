@@ -5,7 +5,7 @@
         {{-- form input peserta --}}
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tambah Data Peserta Lomba {{ $contest->name }}</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataContest.createParticipant', $contest) }}</h1>
         </div>
         @if (session()->has('participantFailed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">

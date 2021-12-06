@@ -19,13 +19,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h3 class="text-center h3">Pendaftaran Lomba {{ $contest->name }}</h3><br>
+        <h5 class="container-sm text-center mb-5">
+            {{ Breadcrumbs::render('dataEventsUser.showContest.participant.create', $contest, $event) }}
+        </h5>
         <form action="{{ route('manageParticipant.store') }}" method="POST" class="mb-5">
             @csrf
             <input type="hidden" class="form-control" name="idContest" value="{{ $contest->id }}">
-            <input type="hidden" class="form-control" name="idEvent" value="{{ $idEvent }}">
+            <input type="hidden" class="form-control" name="idEvent" value="{{ $event->id }}">
             <div class="mb-3">
-                <label for="exampleInputname" class="form-label">Nama Peserta (Jika Kelompok masukan <strong>nama perwakilan</strong>)</label>
+                <label for="exampleInputname" class="form-label">Nama Peserta (Jika Kelompok masukan <strong>nama
+                        perwakilan</strong>)</label>
                 <input type="text" class="form-control" id="exampleInputname" name="name" value="{{ old('name') }}">
             </div>
             <div class="mb-3">
@@ -56,4 +59,5 @@
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>
+    <br><br><br>
 @endsection

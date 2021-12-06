@@ -5,7 +5,8 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Data Juri {{ $contest->name }}</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataContest.showJury', $contest) }}</h1>
+
             <a href="{{ route('manageJury.createJuryInContest', [$contest->id, $contest->id_event]) }}"
                 class="btn btn-primary">Tambah Juri
                 {{ $contest->name }}</a>

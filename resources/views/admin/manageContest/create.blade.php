@@ -67,7 +67,7 @@
 
         {{-- Form input --}}
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tambah Lomba</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ Breadcrumbs::render('dataContest.create') }}</h1>
         </div>
         @if (session()->has('contestFailed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -92,12 +92,15 @@
             @csrf
             <div class="mb-3">
                 <label for="exampleInputname" class="form-label">ID Acara</label>
-                <input type="hidden" class="form-control" id="id_user" name="id_user" value="{{ old('id_user') }}" readonly>
-                <input type="text" class="form-control" id="idEvent" name="id_event" value="{{ old('id_event') }}" placeholder="ID Acara" readonly>
+                <input type="hidden" class="form-control" id="id_user" name="id_user" value="{{ old('id_user') }}"
+                    readonly>
+                <input type="text" class="form-control" id="idEvent" name="id_event" value="{{ old('id_event') }}"
+                    placeholder="ID Acara" readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleInputname" class="form-label">Nama Acara</label>
-                <input type="text" class="form-control" id="nameEvent" name="nameEvent" value="{{ old('nameEvent') }}" placeholder="Nama Acara" readonly>
+                <input type="text" class="form-control" id="nameEvent" name="nameEvent" value="{{ old('nameEvent') }}"
+                    placeholder="Nama Acara" readonly>
             </div>
             <div class="mb-3">
                 <label for="exampleInputname" class="form-label">Nama Lomba</label>

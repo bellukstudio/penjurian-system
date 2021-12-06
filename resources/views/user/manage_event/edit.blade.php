@@ -12,40 +12,45 @@
                 <p>
                 <ul>
                     @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </p>
+                </p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h2 class="text-center">Edit Acara {{ $item->name }}</h2>
+        <h5 class="container-sm text-center mb-5">{{ Breadcrumbs::render('dataEventsUser.edit',$item) }}</h5>
 
-        <form action="{{ route('manageEvent.update',$item->id) }}" method="POST" class="mb-5">
+        <form action="{{ route('manageEvent.update', $item->id) }}" method="POST" class="mb-5">
             @csrf
             @method('put')
             <div class="mb-3">
                 <label for="exampleInputEventName" class="form-label">Nama Acara</label>
-                <input type="text" class="form-control" id="exampleInputEventName" name="name" value="{{ old('name') ?? $item->name }}" placeholder="Class Meeting">
+                <input type="text" class="form-control" id="exampleInputEventName" name="name"
+                    value="{{ old('name') ?? $item->name }}" placeholder="Class Meeting">
             </div>
             <div class="mb-3">
                 <label for="exampleInputPJ" class="form-label">Nama Penanggung Jawab</label>
-                <input type="text" class="form-control" id="exampleInputPj" name="name_person_responsible" value="{{ old('name_person_responsible') ?? $item->name_person_responsible }}" placeholder="Jhon doe">
+                <input type="text" class="form-control" id="exampleInputPj" name="name_person_responsible"
+                    value="{{ old('name_person_responsible') ?? $item->name_person_responsible }}" placeholder="Jhon doe">
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputAddress" class="form-label">Alamat Acara</label>
-                <textarea class="form-control" id="exampleInputPj" name="address" cols="30" rows="10" placeholder="Street,45">{{ old('address') ?? $item->address }}</textarea>
+                <textarea class="form-control" id="exampleInputPj" name="address" cols="30" rows="10"
+                    placeholder="Street,45">{{ old('address') ?? $item->address }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputStartDate" class="form-label">Tanggal Mulai</label>
-                <input type="date" class="form-control" id="exampleInputStartDate" name="start_date" value="{{ old('start_date') ?? $item->start_date }}">
+                <input type="date" class="form-control" id="exampleInputStartDate" name="start_date"
+                    value="{{ old('start_date') ?? $item->start_date }}">
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputEndDate" class="form-label">Tanggal Berakhir</label>
-                <input type="date" class="form-control" id="exampleInputEndDate" name="end_date" value="{{ old('end_date') ?? $item->end_date }}">
+                <input type="date" class="form-control" id="exampleInputEndDate" name="end_date"
+                    value="{{ old('end_date') ?? $item->end_date }}">
             </div>
 
 

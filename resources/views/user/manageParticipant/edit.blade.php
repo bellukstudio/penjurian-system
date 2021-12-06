@@ -19,7 +19,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h3 class="text-center h3">Edit Peserta {{ $participant->name }}</h3><br>
+        <h5 class="container-sm text-center mb-5">
+            {{ Breadcrumbs::render('dataEventsUser.showContest.participant.edit', $contest, $event) }}
+        </h5><br>
         <form action="{{ route('manageParticipant.update', $participant->id) }}" method="POST" class="mb-5">
             @csrf
             @method('put')
@@ -27,7 +29,8 @@
             <input type="hidden" class="form-control" name="id_event" value="{{ $participant->id_event }}">
 
             <div class="mb-3">
-                <label for="exampleInputname" class="form-label">Nama Peserta (Jika Kelompok masukan <strong>nama perwakilan</strong>)</label>
+                <label for="exampleInputname" class="form-label">Nama Peserta (Jika Kelompok masukan <strong>nama
+                        perwakilan</strong>)</label>
                 <input type="text" class="form-control" id="exampleInputname" name="name"
                     value="{{ old('name') ?? $participant->name }}">
             </div>
@@ -56,4 +59,5 @@
             <button type="submit" class="btn btn-primary">Ubah</button>
         </form>
     </div>
+    <br><br><br>
 @endsection

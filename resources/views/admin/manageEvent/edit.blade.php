@@ -4,7 +4,7 @@
     <div class="container text-start">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Edit Acara</h1>
+            <h1 class="h3 mb-0 text-gray-800"{{ Breadcrumbs::render('dataEvents.edit',$item); }}</h1>
         </div>
         @if (session()->has('eventFailed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
