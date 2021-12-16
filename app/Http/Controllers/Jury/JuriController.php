@@ -113,7 +113,7 @@ class JuriController extends Controller
         /**
          * mengambil data contest dimana id_jury == id user login
          */
-        $contest = Jury::with(['event','contest'])->where('id_jury', Auth::user()->id)->latest()->get();
+        $contest = Jury::with(['event', 'contest'])->where('id_jury', Auth::user()->id)->latest()->get();
         return view('juri.data_assessment.index', [
             'contest' => $contest,
         ]);
@@ -132,6 +132,8 @@ class JuriController extends Controller
         })->paginate(1);
         // ambil data contest dimana id == id data yang di ambil
         $contest = Contest::where('id', $id)->firstOrFail();
+        // ambil data tunggal event dimana id event = id event pada contest
+        $event = Event::where('id', $contest->id_event)->firstOrFail();
         // check jury
         /**
          * mengmabil data event dimana id == id dari data variabel tokenCheck
@@ -147,6 +149,7 @@ class JuriController extends Controller
         return view('juri.assesment.create_assessment', [
             'participant' => $participant,
             'contest' => $contest,
+            'event' => $event
 
         ]);
     }
@@ -207,7 +210,8 @@ class JuriController extends Controller
         if (count($checkJury) == 0) {
             return abort(404);
         }
-
+        // ambil data tunggal event dimana id event = id event pada contest
+        $event = Event::where('id', $contest->id_event)->firstOrFail();
         /**
          * mengambil data score dan di kelompokan sesuai id_contest dan id participant
          * dengan dengan relasi lonba,peserta,user
@@ -222,7 +226,9 @@ class JuriController extends Controller
          */
         $score = Score::groupBy('id_contest', 'id_participant')->with(['lomba', 'peserta', 'user'])->selectRaw('sum(score) as score,id_participant,id_jury')->orderBy('score', 'DESC')->where('id_contest', $id)->where('id_jury', Auth::user()->id)->get();
         return view('juri.assesment.data_assessment', [
-            'data' => $score
+            'data' => $score,
+            'event' => $event,
+            'contest' => $contest
         ]);
     }
     public function dataAssessmentIndex($id)

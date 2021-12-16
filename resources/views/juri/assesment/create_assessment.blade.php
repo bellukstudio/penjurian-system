@@ -26,6 +26,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            <br>
+            <div class="text-center h3">{{ Breadcrumbs::render('startAssessment.create', $event,$contest) }}</div>
             @forelse ($participant as $item)
                 <br>
                 <div class="container-sm">

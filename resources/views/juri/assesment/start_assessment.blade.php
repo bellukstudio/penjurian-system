@@ -2,7 +2,9 @@
 @section('content')
     <div class="container-fluid text-center position-absolute top-30">
         <div class="mt-5 justify-content-center ml-5 ml-60 mr-5 mr-60">
-            <div class="text-center h3">Data Lomba</div>
+            <br>
+            <br>
+            <div class="text-center h3">{{ Breadcrumbs::render('startAssessment', $event) }}</div>
             <div class="card-body mb-5">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%">

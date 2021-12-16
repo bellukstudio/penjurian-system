@@ -142,3 +142,18 @@ Breadcrumbs::for('dataEventsUser.showContest.showJury.edit', function (Breadcrum
     $trail->parent('dataEventsUser.showContest.showJury', $contest,$event);
     $trail->push('Edit Juri', route('manageJuri.editJury', $contest->id));
 });
+
+
+
+/// breadcrumbs juri
+Breadcrumbs::for('startAssessment',function(BreadcrumbTrail $trail,$event){
+    $trail->push('Data Lomba',route('juryAssessment.startAssessment',$event->token));
+});
+Breadcrumbs::for('startAssessment.create',function(BreadcrumbTrail $trail,$event,$contest){
+    $trail->parent('startAssessment',$event);
+    $trail->push('Form Penilaian',route('juryAssessment.createAssessment',$contest->id));
+});
+Breadcrumbs::for('startAssessment.show',function(BreadcrumbTrail $trail,$event,$contest){
+    $trail->parent('startAssessment',$event);
+    $trail->push('Data Penilaian',route('juryAssessment.showAssessment',$contest->id));
+});
