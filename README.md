@@ -59,7 +59,10 @@ php artisan migrate
 ```bash
 php artisan db:seed
 ```
-
+## Composer update / install
+```bash
+composer install
+```
 ## Running
 
 ```bash
