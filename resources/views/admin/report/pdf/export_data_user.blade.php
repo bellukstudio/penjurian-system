@@ -17,11 +17,6 @@
             text-align: left;
             padding: 8px;
         }
-
-        tr:nth-child(1) {
-            background-color: #c9c9c9
-        }
-
     </style>
 </head>
 
