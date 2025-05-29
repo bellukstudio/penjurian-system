@@ -53,7 +53,7 @@
             @csrf
             <div class="form-floating">
                 <input type="email" class="form-control  @error('email') is-invalid @enderror" id="floatingInput"
-                    placeholder="name@example.com" name="email" value="{{ old('email') }}">
+                    placeholder="name@example.com" name="email" value="{{ old('email') ?? "adminpenjurian@gmail.com" }}">
                 <label for="floatingInput">Email address</label>
                 @error('email')
                     <div class="invalid-feedback">
@@ -63,7 +63,7 @@
             </div>
             <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                    name="password">
+                    name="password" value="adminpenjurian">
                 <label for="floatingPassword">Password</label>
             </div>
 
