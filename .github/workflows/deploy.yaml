@@ -148,12 +148,12 @@ jobs:
             if [ ! -f .env ]; then
               cp .env.example .env
               php artisan key:generate
+
+              # Run migrations and seed
+              echo "🗄️ Running migrations..."
+              docker exec penjurian-app php artisan migrate --seed --force
             fi
           "
-
-          # Run migrations and seed
-          echo "🗄️ Running migrations..."
-          docker exec penjurian-app php artisan migrate --seed --force
 
           # Cache config
           echo "🔧 Caching configuration..."

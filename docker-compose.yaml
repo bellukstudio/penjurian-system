@@ -18,6 +18,8 @@ services:
       - DB_DATABASE=penjurian
       - DB_USERNAME=penjurian
       - DB_PASSWORD=BellukStudio121.
+      - APP_URL=https://penjuriandemo.bellukstudio.my.id
+      - APP_DEBUG=false
     networks:
       - penjurian-network
     ports:
@@ -28,10 +30,9 @@ services:
     container_name: penjurian-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: BellukStudio121.
       MYSQL_DATABASE: penjurian
       MYSQL_USER: penjurian
-      MYSQL_PASSWORD: BellukStudio121.
     ports:
       - "3307:3306"
     volumes:
@@ -45,8 +46,7 @@ services:
     restart: always
     environment:
       PMA_HOST: mysql
-      PMA_USER: penjurian
-      PMA_PASSWORD: BellukStudio121.
+      MYSQL_ROOT_PASSWORD: BellukStudio121.
     ports:
       - "8081:80"
     depends_on:
