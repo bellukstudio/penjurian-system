@@ -140,6 +140,9 @@ jobs:
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "⚙️ Setting up Laravel..."
 
+          # Run composer install inside the container
+          docker exec penjurian-app composer install --no-dev --optimize-autoloader
+
           # Copy .env file if it doesn't exist
           docker exec penjurian-app bash -c "
             if [ ! -f .env ]; then
