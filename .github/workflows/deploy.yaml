@@ -144,17 +144,14 @@ jobs:
           docker exec penjurian-app composer install --no-dev --optimize-autoloader
 
           # Copy .env file if it doesn't exist
-          docker exec penjurian-app bash -c "
+          docker exec penjurian-app bash -c '
             if [ ! -f .env ]; then
-              cp .env.example .env
-              php artisan key:generate
-
-              # Run migrations and seed
-              echo "🗄️ Running migrations..."
-              docker exec penjurian-app php artisan migrate --seed --force
+              cp .env.example .env && \
+              php artisan key:generate && \
+              echo "🗄️ Running migrations..." && \
+              php artisan migrate --seed --force
             fi
-          "
-
+          '
           # Cache config
           echo "🔧 Caching configuration..."
           docker exec penjurian-app php artisan config:cache
