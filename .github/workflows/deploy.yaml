@@ -93,7 +93,7 @@ jobs:
             fi
           "
 
-          # Run migrations and seed
+          # Run migrations and seed1
           echo "🗄️ Running migrations..."
           docker exec penjurian-app php artisan migrate --force
 
