@@ -150,7 +150,7 @@ jobs:
 
           # Run migrations and seed
           echo "🗄️ Running migrations..."
-          docker exec penjurian-app php artisan migrate --force
+          docker exec penjurian-app php artisan migrate --seed --force
 
           # Cache config
           echo "🔧 Caching configuration..."

@@ -14,7 +14,7 @@ services:
     environment:
       - APP_ENV=production
       - DB_HOST=mysql
-      - DB_PORT=3306
+      - DB_PORT=3307
       - DB_DATABASE=penjurian
       - DB_USERNAME=penjurian
       - DB_PASSWORD=BellukStudio121.
@@ -47,7 +47,6 @@ services:
       PMA_HOST: mysql
       PMA_USER: penjurian
       PMA_PASSWORD: BellukStudio121.
-      PMA_PORT: 3306
     ports:
       - "8081:80"
     depends_on:
