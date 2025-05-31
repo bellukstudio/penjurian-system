@@ -158,4 +158,4 @@ jobs:
           docker exec penjurian-app php artisan route:cache
           docker exec penjurian-app php artisan view:cache
 
-          echo "✅ Deployment completed successfully!"
+          echo "✅ Deployment completed successfully!!"
