@@ -24,9 +24,24 @@ jobs:
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "📥 Pull latest changes..."
 
-          # Fix git permissions if needed
+          # Debug current state
+          echo "Current user: $(whoami)"
+          echo "Directory owner: $(ls -la . | head -2)"
+          echo "Git directory owner: $(ls -la .git/ | head -2)"
+
+          # Add safe directory untuk Git
+          git config --global --add safe.directory /var/www/penjuriandemo.bellukstudio.my.id
+          git config --global --add safe.directory '*'
+
+          # Fix ownership issues
+          sudo chown -R $(whoami):$(whoami) . || true
+
+          # Alternative approach: Use sudo git if ownership fix doesn't work
+          git pull origin main || sudo git pull origin main
+
+          # Reset web permissions after git pull
+          sudo chown -R www-data:www-data storage/ bootstrap/cache/ || true
           sudo chown -R $(whoami):$(whoami) .git/ || true
-          git pull origin main
 
   # Job 2: Stop containers and build
   build-containers:
