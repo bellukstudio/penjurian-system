@@ -57,11 +57,37 @@ jobs:
         port: ${{ secrets.VPS_PORT }}
         script: |
           cd /var/www/penjuriandemo.bellukstudio.my.id
+
+          # Debug: Check files in directory
+          echo "📁 Files in directory:"
+          ls -la
+
+          # Check for docker-compose files
+          echo "🔍 Looking for Docker Compose files:"
+          ls -la docker-compose* || echo "No docker-compose files found"
+          ls -la compose* || echo "No compose files found"
+
+          # Try different docker-compose commands
           echo "🛑 Stopping containers..."
-          docker compose down || true
+          if [ -f "docker-compose.yml" ]; then
+            docker compose -f docker-compose.yml down || docker-compose down || true
+          elif [ -f "docker-compose.yaml" ]; then
+            docker compose -f docker-compose.yaml down || docker-compose down || true
+          elif [ -f "compose.yml" ]; then
+            docker compose -f compose.yml down || true
+          else
+            echo "❌ No docker-compose file found!"
+            exit 1
+          fi
 
           echo "🐳 Building containers..."
-          docker compose build --no-cache
+          if [ -f "docker-compose.yml" ]; then
+            docker compose -f docker-compose.yml build --no-cache || docker-compose build --no-cache
+          elif [ -f "docker-compose.yaml" ]; then
+            docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
+          elif [ -f "compose.yml" ]; then
+            docker compose -f compose.yml build --no-cache
+          fi
 
   # Job 3: Start containers
   start-containers:
@@ -78,11 +104,25 @@ jobs:
         script: |
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "🚀 Starting containers..."
-          docker compose up -d
+
+          if [ -f "docker-compose.yml" ]; then
+            docker compose -f docker-compose.yml up -d || docker-compose up -d
+          elif [ -f "docker-compose.yaml" ]; then
+            docker compose -f docker-compose.yaml up -d || docker-compose up -d
+          elif [ -f "compose.yml" ]; then
+            docker compose -f compose.yml up -d
+          else
+            echo "❌ No docker-compose file found!"
+            exit 1
+          fi
 
           # Wait for containers to be ready
           echo "⏳ Waiting for containers to start..."
           sleep 30
+
+          # Check container status
+          echo "📋 Container status:"
+          docker ps
 
   # Job 4: Setup Laravel
   setup-laravel:
@@ -108,7 +148,7 @@ jobs:
             fi
           "
 
-          # Run migrations and seed1
+          # Run migrations and seed
           echo "🗄️ Running migrations..."
           docker exec penjurian-app php artisan migrate --force
 
