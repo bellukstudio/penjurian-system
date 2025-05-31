@@ -1,0 +1,106 @@
+name: Deploy Laravel to VPS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  # Job 1: Pull latest changes
+  pull-changes:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Pull Latest Changes
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          cd /var/www/penjuriandemo.bellukstudio.my.id
+          echo "📥 Pull latest changes..."
+
+          # Fix git permissions if needed
+          sudo chown -R $(whoami):$(whoami) .git/ || true
+          git pull origin main
+
+  # Job 2: Stop containers and build
+  build-containers:
+    runs-on: ubuntu-latest
+    needs: pull-changes
+    steps:
+    - name: Build Docker Containers
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          cd /var/www/penjuriandemo.bellukstudio.my.id
+          echo "🛑 Stopping containers..."
+          docker compose down || true
+
+          echo "🐳 Building containers..."
+          docker compose build --no-cache
+
+  # Job 3: Start containers
+  start-containers:
+    runs-on: ubuntu-latest
+    needs: build-containers
+    steps:
+    - name: Start Docker Containers
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          cd /var/www/penjuriandemo.bellukstudio.my.id
+          echo "🚀 Starting containers..."
+          docker compose up -d
+
+          # Wait for containers to be ready
+          echo "⏳ Waiting for containers to start..."
+          sleep 30
+
+  # Job 4: Setup Laravel
+  setup-laravel:
+    runs-on: ubuntu-latest
+    needs: start-containers
+    steps:
+    - name: Setup Laravel Application
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          cd /var/www/penjuriandemo.bellukstudio.my.id
+          echo "⚙️ Setting up Laravel..."
+
+          # Copy .env file if it doesn't exist
+          docker exec penjurian-app bash -c "
+            if [ ! -f .env ]; then
+              cp .env.example .env
+              php artisan key:generate
+            fi
+          "
+
+          # Run migrations and seed
+          echo "🗄️ Running migrations..."
+          docker exec penjurian-app php artisan migrate --force
+
+          # Cache config
+          echo "🔧 Caching configuration..."
+          docker exec penjurian-app php artisan config:cache
+          docker exec penjurian-app php artisan route:cache
+          docker exec penjurian-app php artisan view:cache
+
+          echo "✅ Deployment completed successfully!"
