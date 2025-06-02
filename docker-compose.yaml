@@ -15,7 +15,7 @@ services:
       - APP_ENV=production
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_PORT=5579
       - DB_DATABASE=penjurian
       - DB_USERNAME=penjurian
       - DB_PASSWORD=BellukStudio121.
@@ -36,7 +36,7 @@ services:
       POSTGRES_PASSWORD: BellukStudio121.
       POSTGRES_ROOT_PASSWORD: BellukStudio121.
     ports:
-      - "5432:5432"
+      - "5579:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
