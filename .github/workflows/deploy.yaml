@@ -140,18 +140,29 @@ jobs:
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "⚙️ Setting up Laravel..."
 
+          # Wait for PostgreSQL to be ready
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          sleep 10
+
+          # Check PostgreSQL connection
+          docker exec penjurian-postgres pg_isready -U penjurian -d penjurian || echo "PostgreSQL not ready yet, proceeding..."
+
           # Run composer install inside the container
           docker exec penjurian-app composer install --no-dev --optimize-autoloader
 
-          # Copy .env file if it doesn't exist
+          # Copy .env file if it doesn't exist and setup database
           docker exec penjurian-app bash -c '
             if [ ! -f .env ]; then
               cp .env.example .env && \
               php artisan key:generate && \
               echo "🗄️ Running migrations..." && \
               php artisan migrate --seed --force
+            else
+              echo "🔄 Running fresh migrations..." && \
+              php artisan migrate:fresh --seed --force
             fi
           '
+
           # Cache config
           echo "🔧 Caching configuration..."
           docker exec penjurian-app php artisan config:cache

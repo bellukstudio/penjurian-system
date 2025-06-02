@@ -16,13 +16,13 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
 
 # Copy existing application directory contents
-COPY . /var/www/html
+COPY . /var/www/penjuriandemo.bellukstudio.my.id
 
 # Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www/html
+COPY --chown=www-data:www-data . /var/www/penjuriandemo.bellukstudio.my.id
 
 # Create Laravel directories if they don't exist
 RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
