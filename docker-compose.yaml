@@ -11,20 +11,12 @@ services:
       - .:/var/www/penjuriandemo.bellukstudio.my.id
     depends_on:
       - postgres
-    environment:
-      - APP_ENV=production
-      - DB_CONNECTION=pgsql
-      - DB_HOST=postgres
-      - DB_PORT=5579
-      - DB_DATABASE=penjurian
-      - DB_USERNAME=penjurian
-      - DB_PASSWORD=BellukStudio121.
-      - APP_URL=https://penjuriandemo.bellukstudio.my.id
-      - APP_DEBUG=false
+    env_file:
+      - .env
     networks:
       - penjurian-network
     ports:
-      - "9000:9000"
+      - 9000:9000
 
   postgres:
     image: postgres:15
@@ -36,7 +28,7 @@ services:
       POSTGRES_PASSWORD: BellukStudio121.
       POSTGRES_ROOT_PASSWORD: BellukStudio121.
     ports:
-      - "5432:5432"
+      - 5579:5579
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
