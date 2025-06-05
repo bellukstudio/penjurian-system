@@ -18,14 +18,14 @@ services:
 
   penjurian-app:
     build:
-      context: ./penjurian-app
+      context: .
       dockerfile: Dockerfile
     container_name: penjurian-app
     restart: always
     depends_on:
       - postgres_penjurian
     volumes:
-      - ./penjurian-app:/var/www/html
+      - .:/var/www/penjuriandemo.bellukstudio.my.id
     ports:
       - "8000:8000"
     environment:
