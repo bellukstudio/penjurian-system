@@ -69,25 +69,11 @@ jobs:
 
           # Try different docker-compose commands
           echo "🛑 Stopping containers..."
-          if [ -f "docker-compose.yml" ]; then
-            docker compose -f docker-compose.yml down || docker-compose down || true
-          elif [ -f "docker-compose.yaml" ]; then
-            docker compose -f docker-compose.yaml down || docker-compose down || true
-          elif [ -f "compose.yml" ]; then
-            docker compose -f compose.yml down || true
-          else
-            echo "❌ No docker-compose file found!"
-            exit 1
-          fi
+          docker compose -f docker-compose.yaml down || docker-compose down || true
 
           echo "🐳 Building containers..."
-          if [ -f "docker-compose.yml" ]; then
-            docker compose -f docker-compose.yml build --no-cache || docker-compose build --no-cache
-          elif [ -f "docker-compose.yaml" ]; then
-            docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
-          elif [ -f "compose.yml" ]; then
-            docker compose -f compose.yml build --no-cache
-          fi
+          docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
+
 
   # Job 3: Start containers
   start-containers:
@@ -105,16 +91,8 @@ jobs:
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "🚀 Starting containers..."
 
-          if [ -f "docker-compose.yml" ]; then
-            docker compose -f docker-compose.yml up -d || docker-compose up -d
-          elif [ -f "docker-compose.yaml" ]; then
-            docker compose -f docker-compose.yaml up -d || docker-compose up -d
-          elif [ -f "compose.yml" ]; then
-            docker compose -f compose.yml up -d
-          else
-            echo "❌ No docker-compose file found!"
-            exit 1
-          fi
+          docker compose -f docker-compose.yaml up -d || docker-compose up -d
+
 
           # Wait for containers to be ready
           echo "⏳ Waiting for containers to start..."
