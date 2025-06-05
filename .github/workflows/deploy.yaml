@@ -150,23 +150,23 @@ jobs:
           # Run composer install inside the container
           docker exec penjurian-app composer install --no-dev --optimize-autoloader
 
-          # Copy .env file if it doesn't exist and setup database
-          docker exec penjurian-app bash -c '
-            if [ ! -f .env ]; then
-              cp .env.example .env && \
-              php artisan key:generate && \
-              echo "🗄️ Running migrations..." && \
-              php artisan migrate --seed --force
-            else
-              echo "🔄 Running fresh migrations..." && \
-              php artisan migrate:fresh --seed --force
-            fi
-          '
+          # # Copy .env file if it doesn't exist and setup database
+          # docker exec penjurian-app bash -c '
+          #   if [ ! -f .env ]; then
+          #     cp .env.example .env && \
+          #     php artisan key:generate && \
+          #     echo "🗄️ Running migrations..." && \
+          #     php artisan migrate --seed --force
+          #   else
+          #     echo "🔄 Running fresh migrations..." && \
+          #     php artisan migrate:fresh --seed --force
+          #   fi
+          # '
 
-          # Cache config
-          echo "🔧 Caching configuration..."
-          docker exec penjurian-app php artisan config:cache
-          docker exec penjurian-app php artisan route:cache
-          docker exec penjurian-app php artisan view:cache
+          # # Cache config
+          # echo "🔧 Caching configuration..."
+          # docker exec penjurian-app php artisan config:cache
+          # docker exec penjurian-app php artisan route:cache
+          # docker exec penjurian-app php artisan view:cache
 
           echo "✅ Deployment completed successfully!!"
