@@ -17,14 +17,14 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
 
 COPY . .
 
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id \
+    && chmod -R 755 /var/www/penjuriandemo.bellukstudio.my.id
 
 EXPOSE 8000
 
