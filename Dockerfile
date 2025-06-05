@@ -23,8 +23,8 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id \
-    && chmod -R 755 /var/www/penjuriandemo.bellukstudio.my.id
+RUN sudo chown -R www-data.www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
+RUN sudo chown -R www-data.www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
 EXPOSE 8000
 
