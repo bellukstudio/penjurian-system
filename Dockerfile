@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -40,6 +40,7 @@ RUN docker-php-ext-install \
     zip \
     intl \
     xml
+
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
