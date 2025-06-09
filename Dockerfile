@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -7,25 +8,60 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    libpq-dev \
+    libcurl4-openssl-dev \
+    libzip-dev \
+    libbz2-dev \
+    libicu-dev \
     zip \
     unzip \
     curl \
     git \
-    libpq-dev
+    locales
 
-RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
+# Configure GD extension
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
+# Configure PostgreSQL extension
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+
+# Install PHP extensions (semua sekaligus, tidak duplikasi)
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    pgsql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    ctype \
+    curl \
+    zip \
+    intl \
+    xml
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
 
+# Copy application files
 COPY . .
 
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data.www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
-RUN chown -R www-data.www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
+# Set permissions
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage \
+    && chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
+# Expose port
 EXPOSE 8000
 
+# Start command
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
