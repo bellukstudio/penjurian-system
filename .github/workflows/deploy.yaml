@@ -69,10 +69,13 @@ jobs:
 
           # Try different docker-compose commands
           echo "🛑 Stopping containers..."
-          docker compose -f docker-compose.yaml down || docker-compose down || true
+          # docker compose -f docker-compose.yaml down || docker-compose down || true
+          docker compose stop penjurian-app
+          docker compose rm penjurian-app
 
           echo "🐳 Building containers..."
-          docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
+          # docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
+          docker build -t penjurian-app .
 
 
   # Job 3: Start containers
@@ -91,8 +94,8 @@ jobs:
           cd /var/www/penjuriandemo.bellukstudio.my.id
           echo "🚀 Starting containers..."
 
-          docker compose -f docker-compose.yaml up -d || docker-compose up -d
-
+          # docker compose -f docker-compose.yaml up -d || docker-compose up -d
+          docker compose up -d
 
           # Wait for containers to be ready
           echo "⏳ Waiting for containers to start..."
