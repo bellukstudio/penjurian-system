@@ -44,110 +44,110 @@ jobs:
           sudo chown -R $(whoami):$(whoami) .git/ || true
 
   # Job 2: Stop containers and build
-  build-containers:
-    runs-on: ubuntu-latest
-    needs: pull-changes
-    steps:
-    - name: Build Docker Containers
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          cd /var/www/penjuriandemo.bellukstudio.my.id
+  # build-containers:
+  #   runs-on: ubuntu-latest
+  #   needs: pull-changes
+  #   steps:
+  #   - name: Build Docker Containers
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.VPS_HOST }}
+  #       username: ${{ secrets.VPS_USER }}
+  #       password: ${{ secrets.VPS_PASSWORD }}
+  #       port: ${{ secrets.VPS_PORT }}
+  #       script: |
+  #         cd /var/www/penjuriandemo.bellukstudio.my.id
 
-          # Debug: Check files in directory
-          echo "📁 Files in directory:"
-          ls -la
+  #         # Debug: Check files in directory
+  #         echo "📁 Files in directory:"
+  #         ls -la
 
-          # Check for docker-compose files
-          echo "🔍 Looking for Docker Compose files:"
-          ls -la docker-compose* || echo "No docker-compose files found"
-          ls -la compose* || echo "No compose files found"
+  #         # Check for docker-compose files
+  #         echo "🔍 Looking for Docker Compose files:"
+  #         ls -la docker-compose* || echo "No docker-compose files found"
+  #         ls -la compose* || echo "No compose files found"
 
-          # Try different docker-compose commands
-          echo "🛑 Stopping containers..."
-          # docker compose -f docker-compose.yaml down || docker-compose down || true
-          docker compose stop penjurian-app
-          docker compose rm penjurian-app
+  #         # Try different docker-compose commands
+  #         echo "🛑 Stopping containers..."
+  #         # docker compose -f docker-compose.yaml down || docker-compose down || true
+  #         docker compose stop penjurian-app
+  #         docker compose rm penjurian-app
 
-          echo "🐳 Building containers..."
-          # docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
-          docker build -t penjurian-app . --no-cache
+  #         echo "🐳 Building containers..."
+  #         # docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
+  #         docker build -t penjurian-app . --no-cache
 
 
-  # Job 3: Start containers
-  start-containers:
-    runs-on: ubuntu-latest
-    needs: build-containers
-    steps:
-    - name: Start Docker Containers
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          cd /var/www/penjuriandemo.bellukstudio.my.id
-          echo "🚀 Starting containers..."
+  # # Job 3: Start containers
+  # start-containers:
+  #   runs-on: ubuntu-latest
+  #   needs: build-containers
+  #   steps:
+  #   - name: Start Docker Containers
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.VPS_HOST }}
+  #       username: ${{ secrets.VPS_USER }}
+  #       password: ${{ secrets.VPS_PASSWORD }}
+  #       port: ${{ secrets.VPS_PORT }}
+  #       script: |
+  #         cd /var/www/penjuriandemo.bellukstudio.my.id
+  #         echo "🚀 Starting containers..."
 
-          # docker compose -f docker-compose.yaml up -d || docker-compose up -d
-          docker compose up -d
+  #         # docker compose -f docker-compose.yaml up -d || docker-compose up -d
+  #         docker compose up -d
 
-          # Wait for containers to be ready
-          echo "⏳ Waiting for containers to start..."
-          sleep 30
+  #         # Wait for containers to be ready
+  #         echo "⏳ Waiting for containers to start..."
+  #         sleep 30
 
-          # Check container status
-          echo "📋 Container status:"
-          docker ps
+  #         # Check container status
+  #         echo "📋 Container status:"
+  #         docker ps
 
-  # Job 4: Setup Laravel
-  setup-laravel:
-    runs-on: ubuntu-latest
-    needs: start-containers
-    steps:
-    - name: Setup Laravel Application
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          cd /var/www/penjuriandemo.bellukstudio.my.id
-          echo "⚙️ Setting up Laravel..."
+  # # Job 4: Setup Laravel
+  # setup-laravel:
+  #   runs-on: ubuntu-latest
+  #   needs: start-containers
+  #   steps:
+  #   - name: Setup Laravel Application
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.VPS_HOST }}
+  #       username: ${{ secrets.VPS_USER }}
+  #       password: ${{ secrets.VPS_PASSWORD }}
+  #       port: ${{ secrets.VPS_PORT }}
+  #       script: |
+  #         cd /var/www/penjuriandemo.bellukstudio.my.id
+  #         echo "⚙️ Setting up Laravel..."
 
-          # Wait for PostgreSQL to be ready
-          # echo "⏳ Waiting for PostgreSQL to be ready..."
-          # sleep 10
+  #         # Wait for PostgreSQL to be ready
+  #         # echo "⏳ Waiting for PostgreSQL to be ready..."
+  #         # sleep 10
 
-          # Check PostgreSQL connection
-          # docker exec penjurian-postgres pg_isready -U penjurian -d penjurian || echo "PostgreSQL not ready yet, proceeding..."
+  #         # Check PostgreSQL connection
+  #         # docker exec penjurian-postgres pg_isready -U penjurian -d penjurian || echo "PostgreSQL not ready yet, proceeding..."
 
-          # Run composer install inside the container
-          # docker exec penjurian-app composer install --no-dev --optimize-autoloader
+  #         # Run composer install inside the container
+  #         # docker exec penjurian-app composer install --no-dev --optimize-autoloader
 
-          # # Copy .env file if it doesn't exist and setup database
-          # docker exec penjurian-app bash -c '
-          #   if [ ! -f .env ]; then
-          #     cp .env.example .env && \
-          #     php artisan key:generate && \
-          #     echo "🗄️ Running migrations..." && \
-          #     php artisan migrate --seed --force
-          #   else
-          #     echo "🔄 Running fresh migrations..." && \
-          #     php artisan migrate:fresh --seed --force
-          #   fi
-          # '
+  #         # # Copy .env file if it doesn't exist and setup database
+  #         # docker exec penjurian-app bash -c '
+  #         #   if [ ! -f .env ]; then
+  #         #     cp .env.example .env && \
+  #         #     php artisan key:generate && \
+  #         #     echo "🗄️ Running migrations..." && \
+  #         #     php artisan migrate --seed --force
+  #         #   else
+  #         #     echo "🔄 Running fresh migrations..." && \
+  #         #     php artisan migrate:fresh --seed --force
+  #         #   fi
+  #         # '
 
-          # # Cache config
-          echo "🔧 Caching configuration..."
-          docker exec penjurian-app php artisan config:cache
-          docker exec penjurian-app php artisan route:cache
-          docker exec penjurian-app php artisan view:cache
+  #         # # Cache config
+  #         echo "🔧 Caching configuration..."
+  #         docker exec penjurian-app php artisan config:cache
+  #         docker exec penjurian-app php artisan route:cache
+  #         docker exec penjurian-app php artisan view:cache
 
-          echo "✅ Deployment completed successfully!!"
+  #         echo "✅ Deployment completed successfully!!"
