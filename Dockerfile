@@ -65,10 +65,6 @@ RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
 RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
 
-# Configure PHP-FPM to listen on port 9000 (standard FPM port)
-RUN echo "[www]" > /usr/local/etc/php-fpm.d/zz-docker.conf \
-    && echo "listen = 9000" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
-    && echo "listen.allowed_clients = 127.0.0.1" >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Add PHP configuration
 RUN echo "memory_limit = 256M" > /usr/local/etc/php/conf.d/laravel.ini \
@@ -76,41 +72,13 @@ RUN echo "memory_limit = 256M" > /usr/local/etc/php/conf.d/laravel.ini \
     && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/laravel.ini \
     && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/laravel.ini
 
-# Create entrypoint script
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-echo "Waiting for database..."\n\
-while ! nc -z postgres_penjurian 5432; do\n\
-    sleep 1\n\
-done\n\
-echo "Database is ready!"\n\
-\n\
-# Generate key if needed\n\
-if [ ! -f .env ] || ! grep -q "APP_KEY=" .env || [ -z "$(grep APP_KEY= .env | cut -d= -f2)" ]; then\n\
-    echo "Generating application key..."\n\
-    php artisan key:generate --no-interaction\n\
-fi\n\
-\n\
-# Run migrations\n\
-echo "Running migrations..."\n\
-php artisan migrate --force --no-interaction || true\n\
-\n\
-# Cache configurations\n\
-echo "Caching configurations..."\n\
-php artisan config:cache --no-interaction || true\n\
-php artisan route:cache --no-interaction || true\n\
-php artisan view:cache --no-interaction || true\n\
-\n\
-echo "Starting PHP-FPM..."\n\
-exec php-fpm -F\n\
-' > /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Install netcat for database connection check
 RUN apt-get update && apt-get install -y netcat-traditional && rm -rf /var/lib/apt/lists/*
 
 # Expose port 9000 for PHP-FPM
-EXPOSE 9000
+EXPOSE 8000
 
 # Use entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

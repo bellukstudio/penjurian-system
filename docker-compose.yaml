@@ -24,10 +24,10 @@ services:
     restart: always
     depends_on:
       - postgres_penjurian
-    # volumes:
-    #   - .:/var/www/penjuriandemo.bellukstudio.my.id
+    volumes:
+      - .:/var/www/penjuriandemo.bellukstudio.my.id
     ports:
-      - "9000:9000"
+      - "8000:8000"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
