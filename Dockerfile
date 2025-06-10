@@ -17,7 +17,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
-    locales
+    locales \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -25,7 +27,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 # Configure PostgreSQL extension
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 
-# Install PHP extensions (semua sekaligus, tidak duplikasi)
+# Install PHP extensions
 RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
@@ -41,28 +43,42 @@ RUN docker-php-ext-install \
     intl \
     xml
 
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Set working directory sesuai dengan nginx config
 WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
 
 # Copy application files
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage \
-    && chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
+# Create necessary directories
+RUN mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/logs \
+    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/cache \
+    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/sessions \
+    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/views \
+    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
-# Expose port
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id \
+    && chmod -R 755 /var/www/penjuriandemo.bellukstudio.my.id \
+    && chmod -R 775 /var/www/penjuriandemo.bellukstudio.my.id/storage \
+    && chmod -R 775 /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
+
+# Generate application key if .env exists
+RUN if [ -f .env ]; then php artisan key:generate --no-interaction; fi
+
+# Cache Laravel configurations (optional, bisa error jika database belum ready)
+RUN php artisan config:cache --no-interaction || true
+
+# Configure PHP-FPM to listen on TCP instead of socket
+RUN echo "listen = 8000" >> /usr/local/etc/php-fpm.d/zz-docker.conf
+
+# Expose port untuk PHP-FPM
 EXPOSE 8000
 
-# Start command
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start PHP-FPM
+CMD ["php-fpm"]

@@ -122,14 +122,14 @@ jobs:
           echo "⚙️ Setting up Laravel..."
 
           # Wait for PostgreSQL to be ready
-          echo "⏳ Waiting for PostgreSQL to be ready..."
-          sleep 10
+          # echo "⏳ Waiting for PostgreSQL to be ready..."
+          # sleep 10
 
           # Check PostgreSQL connection
-          docker exec penjurian-postgres pg_isready -U penjurian -d penjurian || echo "PostgreSQL not ready yet, proceeding..."
+          # docker exec penjurian-postgres pg_isready -U penjurian -d penjurian || echo "PostgreSQL not ready yet, proceeding..."
 
           # Run composer install inside the container
-          docker exec penjurian-app composer install --no-dev --optimize-autoloader
+          # docker exec penjurian-app composer install --no-dev --optimize-autoloader
 
           # # Copy .env file if it doesn't exist and setup database
           # docker exec penjurian-app bash -c '
@@ -145,9 +145,9 @@ jobs:
           # '
 
           # # Cache config
-          # echo "🔧 Caching configuration..."
-          # docker exec penjurian-app php artisan config:cache
-          # docker exec penjurian-app php artisan route:cache
-          # docker exec penjurian-app php artisan view:cache
+          echo "🔧 Caching configuration..."
+          docker exec penjurian-app php artisan config:cache
+          docker exec penjurian-app php artisan route:cache
+          docker exec penjurian-app php artisan view:cache
 
           echo "✅ Deployment completed successfully!!"
