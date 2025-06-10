@@ -17,9 +17,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
-    locales \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    locales
 
 # Configure GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -27,7 +25,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 # Configure PostgreSQL extension
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 
-# Install PHP extensions
+# Install PHP extensions (semua sekaligus, tidak duplikasi)
 RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
@@ -43,41 +41,28 @@ RUN docker-php-ext-install \
     intl \
     xml
 
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
 
-# Copy application files first (better for Docker caching)
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
-
-# Copy rest of application
+# Copy application files
 COPY . .
 
-# Run composer scripts after copying all files
-RUN composer run-script post-install-cmd --no-interaction || true
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
+# Set permissions
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage \
+    && chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
-
-
-
-# Add PHP configuration
-RUN echo "memory_limit = 256M" > /usr/local/etc/php/conf.d/laravel.ini \
-    && echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/laravel.ini \
-    && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/laravel.ini \
-    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/laravel.ini
-
-
-# Install netcat for database connection check
-RUN apt-get update && apt-get install -y netcat-traditional && rm -rf /var/lib/apt/lists/*
-
+# Expose port
 EXPOSE 8000
 
-# Use entrypoint
-#ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php", "artisan", "serve" ,"--port=8000"]
+# Start command
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
