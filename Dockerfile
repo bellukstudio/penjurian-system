@@ -55,18 +55,9 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Create necessary directories
-RUN mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/logs \
-    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/cache \
-    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/sessions \
-    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/storage/framework/views \
-    && mkdir -p /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
-
 # Set proper permissions
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id \
-    && chmod -R 755 /var/www/penjuriandemo.bellukstudio.my.id \
-    && chmod -R 775 /var/www/penjuriandemo.bellukstudio.my.id/storage \
-    && chmod -R 775 /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage 
+RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
 # Generate application key if .env exists
 RUN if [ -f .env ]; then php artisan key:generate --no-interaction; fi
