@@ -76,9 +76,8 @@ RUN echo "memory_limit = 256M" > /usr/local/etc/php/conf.d/laravel.ini \
 # Install netcat for database connection check
 RUN apt-get update && apt-get install -y netcat-traditional && rm -rf /var/lib/apt/lists/*
 
-# Expose port 9000 for PHP-FPM
 EXPOSE 8000
 
 # Use entrypoint
 #ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "serve" ,"--port=8000"]
