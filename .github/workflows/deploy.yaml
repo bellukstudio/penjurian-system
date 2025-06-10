@@ -75,7 +75,7 @@ jobs:
 
           echo "🐳 Building containers..."
           # docker compose -f docker-compose.yaml build --no-cache || docker-compose build --no-cache
-          docker build -t penjurian-app .
+          docker build -t penjurian-app . --no-cache
 
 
   # Job 3: Start containers
