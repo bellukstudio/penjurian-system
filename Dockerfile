@@ -65,4 +65,4 @@ RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
 EXPOSE 8000
 
 # Start command
-CMD ["php", "artisan", "serve", "--port=8000"]
+CMD ["php-fpm"]

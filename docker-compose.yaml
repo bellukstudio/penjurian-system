@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   postgres_penjurian:
     image: postgres:15
     container_name: postgres_penjurian
@@ -27,7 +28,7 @@ services:
     volumes:
       - .:/var/www/penjuriandemo.bellukstudio.my.id
     ports:
-      - "8000:8000"
+      - "9000:9000"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
