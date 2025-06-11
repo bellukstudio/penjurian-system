@@ -62,7 +62,7 @@ RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage
     && chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
 
 # Expose port
-EXPOSE 8000
+EXPOSE 9000
 
 # Start command
 CMD ["php-fpm"]
