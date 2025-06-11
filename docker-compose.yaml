@@ -26,7 +26,10 @@ services:
     depends_on:
       - postgres_penjurian
     volumes:
-      - .:/var/www/penjuriandemo.bellukstudio.my.id
+      - .:/app
+      - ./storage:/app/storage
+      - ./bootstrap/cache:/app/bootstrap/cache
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
     ports:
       - "9000"
     environment:

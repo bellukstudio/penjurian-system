@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM dunglas/frankenphp:1-php8.3
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
-    locales
+    locales \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -25,7 +26,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 # Configure PostgreSQL extension
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 
-# Install PHP extensions (semua sekaligus, tidak duplikasi)
+# Install PHP extensions
 RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
@@ -41,15 +42,11 @@ RUN docker-php-ext-install \
     intl \
     xml
 
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www/penjuriandemo.bellukstudio.my.id
+WORKDIR /app
 
 # Copy application files
 COPY . .
@@ -57,12 +54,49 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/storage \
-    && chown -R www-data:www-data /var/www/penjuriandemo.bellukstudio.my.id/bootstrap/cache
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /app/storage \
+    && chown -R www-data:www-data /app/bootstrap/cache \
+    && chmod -R 775 /app/storage \
+    && chmod -R 775 /app/bootstrap/cache
+
+# Create Caddyfile for FrankenPHP
+RUN echo ':80 {\n\
+    root * /app/public\n\
+    encode gzip\n\
+    php_fastcgi unix//var/run/php/php-fpm.sock\n\
+    file_server\n\
+    \n\
+    @php {\n\
+        path *.php\n\
+    }\n\
+    \n\
+    handle @php {\n\
+        php\n\
+    }\n\
+    \n\
+    handle {\n\
+        try_files {path} {path}/ /index.php?{query}\n\
+    }\n\
+    \n\
+    header {\n\
+        X-Frame-Options "SAMEORIGIN"\n\
+        X-XSS-Protection "1; mode=block"\n\
+        X-Content-Type-Options "nosniff"\n\
+        Referrer-Policy "no-referrer-when-downgrade"\n\
+    }\n\
+    \n\
+    @static {\n\
+        path *.js *.css *.png *.jpg *.jpeg *.gif *.ico *.svg *.woff *.woff2 *.ttf *.eot\n\
+    }\n\
+    \n\
+    header @static {\n\
+        Cache-Control "public, max-age=31536000, immutable"\n\
+    }\n\
+}' > /etc/caddy/Caddyfile
 
 # Expose port
-EXPOSE 9000
+EXPOSE 80
 
-# Start command
-CMD ["php-fpm"]
+# Start FrankenPHP
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
