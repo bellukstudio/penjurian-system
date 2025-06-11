@@ -31,7 +31,7 @@ services:
       - ./bootstrap/cache:/app/bootstrap/cache
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "9000"
+      - "8080:80"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
