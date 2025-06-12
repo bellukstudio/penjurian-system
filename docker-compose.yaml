@@ -31,7 +31,7 @@ services:
       - ./bootstrap/cache:/app/bootstrap/cache
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "8000"
+      - "127.0.0.1:8001:8000"  # Gunakan port 8001 untuk menghindari konflik
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -41,6 +41,7 @@ services:
       - DB_DATABASE=penjurian_db
       - DB_USERNAME=bellukstudio
       - DB_PASSWORD=BellukStudio121.
+      - APP_URL=https://penjuriandemo.bellukstudio.my.id
     networks:
       - penjurian-network
 

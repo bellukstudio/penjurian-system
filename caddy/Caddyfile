@@ -1,7 +1,7 @@
 # Caddyfile untuk FrankenPHP
 # File ini akan digunakan jika Anda ingin menggunakan konfigurasi Caddy yang lebih fleksibel
 
-:8000 {
+:80 {
     root * /app/public
 
     # Enable gzip compression

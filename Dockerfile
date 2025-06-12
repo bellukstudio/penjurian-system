@@ -96,7 +96,7 @@ RUN echo ':80 {\n\
 }' > /etc/caddy/Caddyfile
 
 # Expose port
-EXPOSE 8000
+EXPOSE 80
 
 # Start FrankenPHP
 CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
