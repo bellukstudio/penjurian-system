@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     container_name: penjuriandemo_app
     restart: always
+    depends_on:
+      - postgres_bellukstudio
     volumes:
       - .:/var/www
     networks:
