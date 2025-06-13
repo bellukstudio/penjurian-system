@@ -109,8 +109,20 @@ RUN apk add --no-cache \
     libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
     libzip-dev zip unzip \
     oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
+    # Tambahkan ekstensi berikut:
+    file \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install pdo pdo_pgsql zip intl gd mbstring xml
+    && docker-php-ext-install \
+        pdo \
+        pdo_pgsql \
+        zip \
+        intl \
+        gd \
+        mbstring \
+        xml \
+        tokenizer \
+        dom \
+        fileinfo
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -119,5 +131,7 @@ WORKDIR /var/www
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev || true
+RUN chown -R www-data:www-data /var/www
 
 CMD ["php-fpm"]
+
