@@ -109,20 +109,9 @@ RUN apk add --no-cache \
     libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
     libzip-dev zip unzip \
     oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
-    # Tambahkan ekstensi berikut:
-    file \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install \
-        pdo \
-        pdo_pgsql \
-        zip \
-        intl \
-        gd \
-        mbstring \
-        xml \
-        tokenizer \
-        dom \
-        fileinfo
+    && docker-php-ext-install pdo pdo_pgsql zip intl gd mbstring xml dom fileinfo tokenizer
+
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
