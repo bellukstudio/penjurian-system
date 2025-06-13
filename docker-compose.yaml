@@ -17,14 +17,12 @@ services:
   #   networks:
   #     - penjurian-network
 
-  penjurian-app:
+  penjuriandemo_app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: penjuriandemo_app
     restart: always
-    depends_on:
-      - postgres
     volumes:
       - .:/var/www
     networks:
