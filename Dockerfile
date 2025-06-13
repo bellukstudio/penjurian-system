@@ -119,6 +119,5 @@ WORKDIR /var/www
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev || true
-RUN chown -R www-data:www-data /var/www
 
 CMD ["php-fpm"]
