@@ -21,7 +21,7 @@ jobs:
         password: ${{ secrets.VPS_PASSWORD }}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          cd /var/www/penjuriandemo.bellukstudio.my.id
+          cd /home/bellukstudio/projects/penjuriandemo.bellukstudio.my.id
           echo "📥 Pull latest changes..."
 
           # Debug current state
@@ -30,7 +30,7 @@ jobs:
           echo "Git directory owner: $(ls -la .git/ | head -2)"
 
           # Add safe directory untuk Git
-          git config --global --add safe.directory /var/www/penjuriandemo.bellukstudio.my.id
+          git config --global --add safe.directory /home/bellukstudio/projects/penjuriandemo.bellukstudio.my.id
           git config --global --add safe.directory '*'
 
           # Fix ownership issues
