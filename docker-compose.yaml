@@ -24,7 +24,7 @@ services:
     container_name: penjuriandemo_app
     restart: always
     depends_on:
-      - postgres_bellukstudio
+      - postgres
     volumes:
       - .:/var/www
     networks:
