@@ -104,23 +104,36 @@
 
 FROM php:8.2.28-fpm-alpine3.22
 
+# Install dependency dasar
 RUN apk add --no-cache \
     bash \
     libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
     libzip-dev zip unzip \
-    oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install pdo pdo_pgsql zip intl gd mbstring xml dom fileinfo tokenizer
+    oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl
 
+# Install ekstensi ringan terlebih dahulu
+RUN docker-php-ext-install pdo pdo_pgsql zip mbstring xml dom tokenizer
 
+# Install ekstensi berat satu per satu
+RUN docker-php-ext-install fileinfo
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd
+RUN docker-php-ext-install intl
+
+# Tambahkan Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www
 
+# Copy project file
 COPY . .
 
+# Composer install
 RUN composer install --optimize-autoloader --no-dev || true
+
+# Atur permission
 RUN chown -R www-data:www-data /var/www
 
+# Jalankan PHP-FPM
 CMD ["php-fpm"]
-
