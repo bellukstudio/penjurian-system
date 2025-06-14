@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fmp-alpine
 
 # Set arguments
 ARG USER_ID=1000
@@ -25,8 +25,10 @@ RUN apk add --no-cache \
     g++ \
     make
 
-# Install PHP extensions
+# Configure GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
+# Install PHP extensions (corrected names)
 RUN docker-php-ext-install \
     dom \
     fileinfo \
@@ -42,15 +44,9 @@ RUN docker-php-ext-install \
     xml \
     xmlreader \
     xmlwriter \
-    php-xml \
-    php-mbstring \
-    php-curl \
-    php-zip
+    tokenizer
 
-# Install tokenizer extension
-RUN docker-php-ext-install php-tokenizer
-
-# # Install Redis extension
+# Install Redis extension (uncomment if needed)
 # RUN pecl install redis && docker-php-ext-enable redis
 
 # Install Composer
