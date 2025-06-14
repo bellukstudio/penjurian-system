@@ -42,13 +42,16 @@ RUN docker-php-ext-install \
     xml \
     xmlreader \
     xmlwriter \
-    simplexml
+    php-xml \
+    php-mbstring \
+    php-curl \
+    php-zip
 
 # Install tokenizer extension
-RUN docker-php-ext-install tokenizer
+RUN docker-php-ext-install php-tokenizer
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+# # Install Redis extension
+# RUN pecl install redis && docker-php-ext-enable redis
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
