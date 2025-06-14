@@ -19,7 +19,6 @@ jobs:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.   }}
         script: |
           cd /home/bellukstudio/projects/penjuriandemo.bellukstudio.my.id
           echo "📥 Pull latest changes..."
