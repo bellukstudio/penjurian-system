@@ -101,7 +101,6 @@
 # # Start FrankenPHP
 # CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
 
-
 FROM php:8.2.28-fpm-alpine3.22
 
 # Install dependency dasar
