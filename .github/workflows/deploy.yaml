@@ -56,7 +56,7 @@ jobs:
   #       password: ${{ secrets.VPS_PASSWORD }}
   #       port: ${{ secrets.VPS_PORT }}
   #       script: |
-  #         cd /var/www/penjuriandemo.bellukstudio.my.id
+  #         cd /home/bellukstudio/projects//penjuriandemo.bellukstudio.my.id
 
   #         # Debug: Check files in directory
   #         echo "📁 Files in directory:"
