@@ -100,59 +100,96 @@
 
 # # Start FrankenPHP
 # CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
-
 FROM php:8.2.28-fpm-alpine3.22
 
-# Install dependencies dan build tools
+# Update package index
+RUN apk update
+
+# Install system dependencies
 RUN apk add --no-cache \
     bash \
-    libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
-    libzip-dev zip unzip \
-    oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
-    file \
-    # Build tools untuk kompilasi
-    autoconf gcc g++ make \
-    # Tools untuk tokenizer jika diperlukan
-    re2c bison
+    curl \
+    git \
+    zip \
+    unzip \
+    file
 
-# Configure dan install extensions (TANPA tokenizer)
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install \
-        pdo \
-        pdo_pgsql \
-        zip \
-        intl \
-        gd \
-        mbstring \
-        xml \
-        dom \
-        fileinfo
+# Install build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+    autoconf \
+    gcc \
+    g++ \
+    make \
+    pkgconfig \
+    re2c \
+    bison
 
-# Alternatif install tokenizer jika benar-benar diperlukan:
-# Cara 1: Install via package manager (recommended)
-RUN apk add --no-cache php82-tokenizer 2>/dev/null || echo "php82-tokenizer not available"
+# Install PHP extension dependencies
+RUN apk add --no-cache \
+    # Image processing
+    libpng libpng-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    freetype-dev \
+    # Archive
+    libzip-dev \
+    # String processing
+    oniguruma-dev \
+    # Database
+    postgresql-dev \
+    # Internationalization
+    icu-dev \
+    # XML processing
+    libxml2 \
+    libxml2-dev \
+    libxml2-utils \
+    libxslt \
+    libxslt-dev
 
-# Cara 2: Jika cara 1 gagal, coba manual install
-# RUN cd /usr/src/php/ext/tokenizer && phpize && ./configure && make && make install \
-#     && docker-php-ext-enable tokenizer
+# Configure and install extensions step by step
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
+RUN docker-php-ext-install -j$(nproc) gd
 
-# Copy Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN docker-php-ext-install -j$(nproc) pdo pdo_pgsql
+RUN docker-php-ext-install -j$(nproc) zip
+RUN docker-php-ext-install -j$(nproc) intl
+RUN docker-php-ext-install -j$(nproc) mbstring
+RUN docker-php-ext-install -j$(nproc) fileinfo
+
+# Install XML extensions separately
+RUN docker-php-ext-install -j$(nproc) xml
+RUN docker-php-ext-install -j$(nproc) dom
+
+# Try to install tokenizer (with fallback)
+RUN docker-php-ext-install tokenizer || \
+    echo "Tokenizer installation failed, but it's usually built-in"
+
+# Clean up build dependencies
+RUN apk del .build-deps
+
+# Install Composer
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
+
+# Verify installations
+RUN php -v && composer --version
+RUN php -m | grep -E "(gd|pdo|zip|intl|mbstring|fileinfo|xml|dom)" || echo "Some extensions missing"
 
 # Set working directory
 WORKDIR /var/www
 
-# Copy project files
+# Copy application files
 COPY . .
 
-# Install dependencies
-RUN composer install --optimize-autoloader --no-dev || true
+# Install PHP dependencies
+RUN composer install --optimize-autoloader --no-dev --no-interaction || \
+    composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www
+RUN find /var/www -type f -exec chmod 644 {} \;
+RUN find /var/www -type d -exec chmod 755 {} \;
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache 2>/dev/null || true
 
-# # Expose port (optional, untuk dokumentasi)
-# EXPOSE 9000
+EXPOSE 9000
 
-# Start PHP-FPM
 CMD ["php-fpm"]
