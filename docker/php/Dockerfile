@@ -23,7 +23,7 @@ RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install pgsql
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install zip
-RUN docker-php-ext-install fileinfo
+# RUN docker-php-ext-install fileinfo
 RUN docker-php-ext-install exif
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install bcmath
