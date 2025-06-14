@@ -101,17 +101,22 @@
 # # Start FrankenPHP
 # CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
 
-
 FROM php:8.2.28-fpm-alpine3.22
 
+# Install dependencies dan build tools
 RUN apk add --no-cache \
     bash \
     libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
     libzip-dev zip unzip \
     oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
-    # Tambahkan ekstensi berikut:
     file \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    # Build tools untuk kompilasi
+    autoconf gcc g++ make \
+    # Tools untuk tokenizer jika diperlukan
+    re2c bison
+
+# Configure dan install extensions (TANPA tokenizer)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install \
         pdo \
         pdo_pgsql \
@@ -120,17 +125,34 @@ RUN apk add --no-cache \
         gd \
         mbstring \
         xml \
-        tokenizer \
         dom \
         fileinfo
 
+# Alternatif install tokenizer jika benar-benar diperlukan:
+# Cara 1: Install via package manager (recommended)
+RUN apk add --no-cache php82-tokenizer 2>/dev/null || echo "php82-tokenizer not available"
+
+# Cara 2: Jika cara 1 gagal, coba manual install
+# RUN cd /usr/src/php/ext/tokenizer && phpize && ./configure && make && make install \
+#     && docker-php-ext-enable tokenizer
+
+# Copy Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www
 
+# Copy project files
 COPY . .
 
+# Install dependencies
 RUN composer install --optimize-autoloader --no-dev || true
+
+# Set permissions
 RUN chown -R www-data:www-data /var/www
 
+# # Expose port (optional, untuk dokumentasi)
+# EXPOSE 9000
+
+# Start PHP-FPM
 CMD ["php-fpm"]
