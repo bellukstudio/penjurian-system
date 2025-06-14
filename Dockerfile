@@ -109,16 +109,25 @@ RUN apk add --no-cache \
     bash \
     libpng libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
     libzip-dev zip unzip \
-    oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl
+    oniguruma-dev postgresql-dev icu-dev libxml2-dev git curl \
+    autoconf gcc g++ make
 
-# Install ekstensi ringan terlebih dahulu
-RUN docker-php-ext-install pdo pdo_pgsql zip mbstring xml dom tokenizer
+# Install ekstensi ringan terlebih dahulu (tanpa tokenizer)
+RUN docker-php-ext-install pdo pdo_pgsql zip mbstring xml dom
 
 # Install ekstensi berat satu per satu
 RUN docker-php-ext-install fileinfo
+
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install gd
+
 RUN docker-php-ext-install intl
+
+# Fix untuk tokenizer - install via PECL atau skip jika tidak diperlukan
+# Tokenizer biasanya sudah included di PHP 8.2, jadi kita bisa skip
+# Jika benar-benar diperlukan, uncomment baris berikut:
+# RUN apk add --no-cache re2c bison \
+#     && docker-php-ext-install tokenizer
 
 # Tambahkan Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
