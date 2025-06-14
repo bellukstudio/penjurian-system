@@ -17,23 +17,25 @@ RUN apk add --no-cache \
 # Configure GD extension with optimizations
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Install PHP extensions in builder stage
-RUN docker-php-ext-install -j$(nproc) \
-    pdo \
-    pdo_pgsql \
-    pgsql \
-    mbstring \
-    zip \
-    fileinfo \
-    exif \
-    pcntl \
-    bcmath \
-    tokenizer
+# Install PHP extensions one by one to avoid memory issues
+RUN docker-php-ext-install pdo
+RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pgsql
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install fileinfo
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install pcntl
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install tokenizer
 
-# Install DOM and XML extensions separately (memory intensive)
-RUN docker-php-ext-install dom xml xmlreader xmlwriter
+# Install DOM and XML extensions separately
+RUN docker-php-ext-install dom
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install xmlreader
+RUN docker-php-ext-install xmlwriter
 
-# Install GD extension (most memory intensive)
+# Install GD extension (most memory intensive) - single threaded
 RUN docker-php-ext-install gd
 
 # Production stage
