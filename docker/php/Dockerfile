@@ -1,4 +1,4 @@
-FROM php:8.2-fmp-alpine
+FROM php:8.2-fpm-alpine
 
 # Set arguments
 ARG USER_ID=1000
