@@ -1,7 +1,7 @@
 
 services:
   # PenjurianDemo PHP-FPM Application
-  app:
+  penjuriandemo_app:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
