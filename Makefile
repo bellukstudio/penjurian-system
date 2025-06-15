@@ -29,6 +29,7 @@ db-migrate: ## Run database migrations
 
 db-fresh: ## Fresh database with seeders
 	docker compose exec penjuriandemo_app php artisan migrate:fresh --seed
+    
 db-migrate-seed: ## Run database migrations and seeders
     docker compose exec penjuriandemo_app php artisan migrate --seed
 
