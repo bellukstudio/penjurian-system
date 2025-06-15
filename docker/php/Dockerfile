@@ -1,18 +1,21 @@
 FROM php:8.2-fpm-alpine AS builder
 
-# Install build dependencies
-RUN apk add --no-cache \
-    build-base \
-    autoconf \
-    g++ \
-    make \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
-    oniguruma-dev \
-    postgresql-dev \
-    libxml2-dev
+# Install build dependencies one by one (Alpine-specific packages only)
+RUN apk add --no-cache build-base
+RUN apk add --no-cache autoconf
+RUN apk add --no-cache g++
+RUN apk add --no-cache make
+RUN apk add --no-cache libpng-dev
+RUN apk add --no-cache libjpeg-turbo-dev
+RUN apk add --no-cache freetype-dev
+RUN apk add --no-cache libzip-dev
+RUN apk add --no-cache oniguruma-dev
+RUN apk add --no-cache postgresql-dev
+RUN apk add --no-cache libxml2-dev
+RUN apk add --no-cache zlib-dev
+RUN apk add --no-cache bzip2-dev
+RUN apk add --no-cache curl-dev
+RUN apk add --no-cache icu-dev
 
 # Configure GD extension with optimizations
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -27,10 +30,10 @@ RUN docker-php-ext-install zip
 RUN docker-php-ext-install exif
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install tokenizer
+# RUN docker-php-ext-install tokenizer
 
 # Install DOM and XML extensions separately
-RUN docker-php-ext-install dom
+# RUN docker-php-ext-install dom
 RUN docker-php-ext-install xml
 RUN docker-php-ext-install xmlreader
 RUN docker-php-ext-install xmlwriter
@@ -45,27 +48,29 @@ FROM php:8.2-fpm-alpine AS production
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
-# Install only runtime dependencies
-RUN apk add --no-cache \
-    libpng \
-    libjpeg-turbo \
-    freetype \
-    libzip \
-    zip \
-    jpegoptim \
-    optipng \
-    pngquant \
-    gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
-    oniguruma \
-    postgresql-libs \
-    libxml2 \
-    supervisor \
-    nodejs \
-    npm
+# Install only runtime dependencies one by one
+RUN apk add --no-cache libpng
+RUN apk add --no-cache libjpeg-turbo
+RUN apk add --no-cache freetype
+RUN apk add --no-cache libzip
+RUN apk add --no-cache zip
+RUN apk add --no-cache jpegoptim
+RUN apk add --no-cache optipng
+RUN apk add --no-cache pngquant
+RUN apk add --no-cache gifsicle
+# RUN apk add --no-cache vim
+RUN apk add --no-cache unzip
+RUN apk add --no-cache git
+RUN apk add --no-cache curl
+RUN apk add --no-cache oniguruma
+RUN apk add --no-cache postgresql-libs
+RUN apk add --no-cache libxml2
+RUN apk add --no-cache supervisor
+RUN apk add --no-cache nodejs
+RUN apk add --no-cache npm
+RUN apk add --no-cache zlib
+RUN apk add --no-cache bzip2
+RUN apk add --no-cache icu-libs
 
 # Copy PHP extensions from builder stage
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
