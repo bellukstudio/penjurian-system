@@ -1,10 +1,10 @@
-.PHONY: help build up down restart logs shell db-migrate db-fresh cache-clear
+.PHONY: help build up down restart logs shell db-migrate db-fresh cache-clear db-migrate-seed optimize queue-work tinker key-generate storage-link
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
 	@echo ''
 	@echo 'Targets:'
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 build: ## Build PenjurianDemo containers
 	docker compose build --no-cache
@@ -29,9 +29,9 @@ db-migrate: ## Run database migrations
 
 db-fresh: ## Fresh database with seeders
 	docker compose exec penjuriandemo_app php artisan migrate:fresh --seed
-    
+
 db-migrate-seed: ## Run database migrations and seeders
-    docker compose exec penjuriandemo_app php artisan migrate --seed
+	docker compose exec penjuriandemo_app php artisan migrate --seed
 
 cache-clear: ## Clear all caches
 	docker compose exec penjuriandemo_app php artisan cache:clear
