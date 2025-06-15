@@ -35,8 +35,8 @@ RUN docker-php-ext-install bcmath
 # Install DOM and XML extensions separately
 # RUN docker-php-ext-install dom
 RUN docker-php-ext-install xml
-RUN docker-php-ext-install xmlreader
-RUN docker-php-ext-install xmlwriter
+# RUN docker-php-ext-install xmlreaderw
+# RUN docker-php-ext-install xmlwriter
 
 # Install GD extension (most memory intensive) - single threaded
 RUN docker-php-ext-install gd
