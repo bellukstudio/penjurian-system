@@ -96,7 +96,7 @@ USER penjuriandemo.bellukstudio.my.id
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 # Install NPM dependencies and build assets
-RUN npm ci --only=production && npm run build && npm cache clean --force
+# RUN npm ci --only=production && npm run build && npm cache clean --force
 
 # Switch back to root to set permissions
 USER root
