@@ -22,17 +22,17 @@ class ReportController extends Controller
          * jumlah kolom score,
          * id participant
          * dan id jury
-         * 
+         *
          */
         // $score = Score::groupBy('id_participant', 'id_jury', 'id_contest')->with(['lomba', 'peserta', 'user'])->selectRaw('sum(scores) as score,id_participant,id_jury,id_contest')->orderBy('score', 'DESC')->latest();
         /**
          * search data lomba dengan join table
          * jika terdapat permintaan post
-         * 
+         *
          * dan jika tombol search btn di klik dan input text dengan nama
          * searchContestName dan searchEventName
          * maka akan mencari data yang mengandung nilai yang terdapat pada ke 2 input text tersebut
-         * 
+         *
          * jika tombol exportPdf di klik
          * maka akan
          */
@@ -56,7 +56,7 @@ class ReportController extends Controller
                  * dan mengambil baris
                  * jumlah kolom score,
                  * id participant
-                 * 
+                 *
                  */
                 $querySearch = $search->where('contests.name', 'like', '%' . request('searchContestName') . '%')->where('events.name', 'like', '%' . request('searchEventName') . '%');
                 $data = $querySearch->groupBy('scores.id_participant', 'scores.id_contest')->orderBy('average', 'DESC')->get();
@@ -100,7 +100,18 @@ class ReportController extends Controller
             ]);
         }
 
-        $search->groupBy('scores.id_participant', 'scores.id_contest', 'scores.id_jury')->latest('scores.created_at');
+        $search->groupBy(
+            'scores.id_participant',
+            'scores.id_contest',
+            'scores.id_jury',
+            'users.name',
+            'contests.assessment_aspect',
+            'contests.name',
+            'participants.name',
+            'participants.id',
+            'events.name'
+        )->latest('scores.created_at');
+
         $score = $search->paginate(10);
         return view('user.report.dataAssessment', [
             'data' => $score
@@ -133,7 +144,7 @@ class ReportController extends Controller
                 return $pdf->download('pdf_export_contest_' . request('searchEventName') . '.pdf');
             }
 
-            // 
+            //
             $contest = $search->latest('contests.created_at')->paginate(10);
             return view('user.report.data_contest', [
                 'contest' => $contest
@@ -172,14 +183,14 @@ class ReportController extends Controller
     public function dataParticipant(Request $request)
     {
         // ambil data peserta dengan join tabel events dan participants
-        /** 
+        /**
          * nama peserta,
          * jenis kelamin,
          * nomor telepon
          * alamat,
          * nama acara,
          * nama lomba
-         * 
+         *
          * dimnana id user pada tabel event == id user login
          */
         $search = Participant::join('events', 'participants.id_event', '=', 'events.id')
