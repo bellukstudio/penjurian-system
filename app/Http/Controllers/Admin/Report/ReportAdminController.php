@@ -220,7 +220,9 @@ class ReportAdminController extends Controller
             'contests.name',
             'participants.name',
             'participants.id',
-            'events.name'
+            'events.name',
+            'users.email',
+            'scores.created_at'
         )->latest('scores.created_at');
 
         $score = $search->paginate(10);
