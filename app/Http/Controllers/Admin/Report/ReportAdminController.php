@@ -205,7 +205,7 @@ class ReportAdminController extends Controller
                 // diberi nama dan di download
                 return $pdf->download('pdf_export_assessment_' . request('searchEventName') . '_' . request('searchContestName') . '.pdf');
             }
-            $search->groupBy('scores.id_participant', 'scores.id_contest', 'scores.id_jury')->latest('scores.created_at');
+            $search->groupBy('scores.id_participant', 'scores.id_contest', 'scores.id_jury', 'users.name')->latest('scores.created_at');
             $score = $search->paginate(10);
             return view('admin.report.data_asssessment', [
                 'data' => $score
