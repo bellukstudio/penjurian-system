@@ -219,12 +219,19 @@ class JuriController extends Controller
          * jumlah kolom score,
          * id participant
          * dan id jury
-         * 
+         *
          * lalu di tampilkan dari data terbesar ke kecil
          * dimana id jury == id login user
          * id contest == id data yang diambil
          */
-        $score = Score::groupBy('id_contest', 'id_participant')->with(['lomba', 'peserta', 'user'])->selectRaw('sum(score) as score,id_participant,id_jury')->orderBy('score', 'DESC')->where('id_contest', $id)->where('id_jury', Auth::user()->id)->get();
+        $score = Score::groupBy('id_contest', 'id_participant', 'id_jury')
+            ->with(['lomba', 'peserta', 'user'])
+            ->selectRaw('sum(score) as score, id_participant, id_jury')
+            ->orderBy('score', 'DESC')
+            ->where('id_contest', $id)
+            ->where('id_jury', Auth::user()->id)
+            ->get();
+
         return view('juri.assesment.data_assessment', [
             'data' => $score,
             'event' => $event,
@@ -240,7 +247,7 @@ class JuriController extends Controller
          * jumlah kolom score,
          * id participant
          * dan id jury
-         * 
+         *
          * lalu di tampilkan dari data terbesar ke kecil
          * dimana id jury == id login user
          * id contest == id data yang diambil
